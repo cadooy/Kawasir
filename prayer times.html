@@ -1,0 +1,169 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مواقيت صلاة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #080000;
+            color: #fff;
+            font-family: 'Tajawal', sans-serif;
+            text-align: center;
+            -webkit-user-select: none; /* منع التحديد في متصفح سفاري */
+            -moz-user-select: none; /* منع التحديد في متصفح فايرفوكس */
+            -ms-user-select: none; /* منع التحديد في متصفح إيدج */
+            user-select: none; /* منع التحديد في المتصفحات الحديثة */
+        }
+        header {
+            padding: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+        }
+        .title {
+            color: gold;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            /* تم حذف تأثير الـ glow */
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 300px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            direction: rtl;
+        }
+        .date {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+        .prayer-time {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+        .prayer-name {
+            font-weight: bold;
+        }
+        .prayer-time span {
+            color: gold;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="لوجو التطبيق" class="logo">
+        <h1 class="title">مواقيت صلاة</h1>
+    </header>
+    <div class="card" id="prayer-times">
+        <p>جاري تحميل البيانات...</p>
+    </div>
+    <div id="error-message" class="error"></div>
+    <footer>مواقيت صلاة © تطبيق كواسر</footer>
+    <script>
+        async function fetchMuslimWorldLeagueTiming(lat, lon) {
+            const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`; // Method 3: Muslim World League
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const timings = data.data.timings;
+                const hijriDate = data.data.date.hijri;
+                const gregorianDate = data.data.date.gregorian;
+
+                // تحويل اليوم الميلادي إلى العربية
+                const arabicWeekday = {
+                    Saturday: "السبت",
+                    Sunday: "الأحد",
+                    Monday: "الإثنين",
+                    Tuesday: "الثلاثاء",
+                    Wednesday: "الأربعاء",
+                    Thursday: "الخميس",
+                    Friday: "الجمعة"
+                }[gregorianDate.weekday.en] || gregorianDate.weekday.en;
+
+                document.getElementById('prayer-times').innerHTML = `
+                    <div class="date">
+                        <p>${hijriDate.weekday.ar} - ${hijriDate.date} هـ</p>
+                        <p>${arabicWeekday} - ${gregorianDate.date} م</p>
+                    </div>
+                    ${Object.entries(timings)
+                        .filter(([prayer]) => !["Midnight", "Firstthird", "Lastthird", "Sunset"].includes(prayer))
+                        .map(([prayer, time]) => `
+                            <div class="prayer-time">
+                                <span class="prayer-name">${translatePrayer(prayer)}</span>
+                                <span>${time}</span>
+                            </div>
+                        `).join("")}
+                `;
+            } catch (error) {
+                document.getElementById('error-message').innerText = 
+                    `حدث خطأ أثناء جلب البيانات: ${error.message}`;
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        function translatePrayer(prayer) {
+            const translations = {
+                Fajr: "الفجر",
+                Sunrise: "الشروق",
+                Dhuhr: "الظهر",
+                Asr: "العصر",
+                Maghrib: "المغرب",
+                Isha: "العشاء",
+                Imsak: "إمساك"
+            };
+            return translations[prayer] || prayer;
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const { latitude, longitude } = position.coords;
+                    fetchMuslimWorldLeagueTiming(latitude, longitude);
+                }, error => {
+                    document.getElementById('error-message').innerText = 
+                        'يرجى السماح للوصول إلى الموقع لتحديث التوقيت الإسلامي العالمي.';
+                    console.error('Geolocation error:', error);
+                });
+            } else {
+                document.getElementById('error-message').innerText = 
+                    'ميزة الموقع غير مدعومة على هذا الجهاز.';
+            }
+        }
+
+        getLocation();
+    </script>
+</body>
+</html>

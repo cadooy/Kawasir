@@ -1,0 +1,152 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أحوال الطقس</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #080000;
+            color: #fff;
+            font-family: 'Tajawal', sans-serif;
+            text-align: center;
+            -webkit-user-select: none; /* منع التحديد في متصفح سفاري */
+            -moz-user-select: none; /* منع التحديد في متصفح فايرفوكس */
+            -ms-user-select: none; /* منع التحديد في متصفح إيدج */
+            user-select: none; /* منع التحديد في المتصفحات الحديثة */
+        }
+        header {
+            padding: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+        }
+        .title {
+            color: gold;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 300px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            direction: rtl;
+        }
+        .date {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+        .weather-info {
+            font-size: 1.3rem;
+            color: gold;
+            margin: 10px 0;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="لوجو التطبيق" class="logo">
+        <h1 class="title">أحوال الطقس</h1>
+    </header>
+    <div class="card" id="weather-info">
+        <p>جاري تحميل البيانات...</p>
+    </div>
+    <div id="error-message" class="error"></div>
+    <footer>أحوال الطقس - تطبيق كواسر © 2024</footer>
+    <script>
+        async function fetchWeatherData(lat, lon) {
+            const apiKey = '8399c3cb6528492bb2535846240112';
+            const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&lang=ar`;
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const weather = data.current;
+                const location = data.location;
+                const date = new Date(location.localtime);
+
+                // تحويل الأرقام إلى الإنجليزية
+                const formattedDate = date.toLocaleDateString('en-US');
+                const formattedTime = formatTime(date);
+
+                document.getElementById('weather-info').innerHTML = `
+                    <div class="date">
+                        <p>${location.name}, ${location.country}</p>
+                        <p>${formattedDate} - ${formattedTime}</p>
+                    </div>
+                    <div class="weather-info">
+                        <p><strong>درجة الحرارة:</strong> ${weather.temp_c}°C</p>
+                        <p><strong>الرطوبة:</strong> ${weather.humidity}%</p>
+                        <p><strong>الحالة:</strong> ${weather.condition.text}</p>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('error-message').innerText = 
+                    `حدث خطأ أثناء جلب البيانات: ${error.message}`;
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        function formatTime(date) {
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true,
+            };
+
+            const time = date.toLocaleTimeString('en-US', options);
+            // تغيير AM/PM إلى العربية
+            return time.replace('AM', 'صباحًا').replace('PM', 'مساءً');
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const { latitude, longitude } = position.coords;
+                    fetchWeatherData(latitude, longitude);
+                }, error => {
+                    document.getElementById('error-message').innerText = 
+                        'يرجى السماح للوصول إلى الموقع للحصول على أحوال الطقس.';
+                    console.error('Geolocation error:', error);
+                }, {
+                    enableHighAccuracy: true, // لضمان الدقة العالية للموقع
+                    timeout: 5000, // تحديد وقت مهلة إذا لم يتم الحصول على الموقع
+                    maximumAge: 0 // منع استخدام بيانات الموقع القديمة
+                });
+            } else {
+                document.getElementById('error-message').innerText = 
+                    'ميزة الموقع غير مدعومة على هذا الجهاز.';
+            }
+        }
+
+        getLocation();
+    </script>
+</body>
+</html>
