@@ -28,9 +28,9 @@
 </head>
 <body>
     <!-- تضمين الموقع داخل Iframe -->
-    <iframe 
-        id="webview" 
-        src="https://livetv.aflam4you.net/top-videos.html" 
+    <iframe
+        id="webview"
+        src="https://livetv.aflam4you.net/top-videos.html"
         sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
         allowfullscreen
         referrerpolicy="no-referrer"
@@ -47,6 +47,15 @@
                 contentWindow.open = function() {
                     console.warn("تم حظر نافذة منبثقة.");
                     return null;
+                };
+
+                // منع التوجيهات التلقائية
+                contentWindow.location.assign = function() {
+                    console.warn("تم حظر توجيه تلقائي.");
+                };
+
+                contentWindow.location.replace = function() {
+                    console.warn("تم حظر توجيه تلقائي.");
                 };
             }
         };
