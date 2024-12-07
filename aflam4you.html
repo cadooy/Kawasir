@@ -25,13 +25,14 @@
             -ms-user-select: none;  /* لمنع النسخ في Internet Explorer */
         }
     </style>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-ancestors 'none';">
 </head>
 <body>
     <!-- تضمين الموقع داخل Iframe -->
     <iframe
         id="webview"
         src="https://livetv.aflam4you.net/top-videos.html"
-        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
+        sandbox="allow-scripts allow-same-origin allow-presentation"
         allowfullscreen
         referrerpolicy="no-referrer"
     ></iframe>
