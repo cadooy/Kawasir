@@ -21,7 +21,7 @@
         /* منع النسخ داخل صفحة التطبيق */
         body, iframe {
             user-select: none;  /* منع تحديد النصوص */
-            -webkit-user-select: none;  /* لعمل دعم للأجهزة القديمة */
+            -webkit-user-select: none;  /* دعم للأجهزة القديمة */
             -ms-user-select: none;  /* لمنع النسخ في Internet Explorer */
         }
     </style>
@@ -31,7 +31,6 @@
     <iframe
         id="webview"
         src="https://tlfaz.com/"
-        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
         allowfullscreen
         referrerpolicy="no-referrer"
     ></iframe>
