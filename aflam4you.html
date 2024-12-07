@@ -3,58 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebView</title>
+    <title>مشاهدة القنوات</title>
     <style>
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
             overflow: hidden;
+            background-color: #000; /* لون خلفية للمظهر الداكن */
         }
+
         iframe {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             border: none;
+        }
+
+        /* منع النسخ داخل صفحة التطبيق */
+        body, iframe {
+            user-select: none;  /* منع تحديد النصوص */
+            -webkit-user-select: none;  /* لعمل دعم للأجهزة القديمة */
+            -ms-user-select: none;  /* لمنع النسخ في Internet Explorer */
         }
     </style>
 </head>
 <body>
-    <iframe id="webview" src="https://livetv.aflam4you.net/top-videos.html"></iframe>
+    <!-- تضمين الموقع داخل Iframe -->
+    <iframe 
+        id="webview" 
+        src="https://livetv.aflam4you.net/top-videos.html" 
+        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
+        allowfullscreen
+        referrerpolicy="no-referrer"
+    ></iframe>
+
     <script>
-        // تحميل الموقع داخل iframe
+        // منع الإعلانات المنبثقة والنوافذ الجديدة
         const iframe = document.getElementById('webview');
 
-        // منع النوافذ المنبثقة
-        iframe.onload = function() {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A' && event.target.getAttribute('target') === '_blank') {
-                    event.preventDefault();
-                }
-            });
+        iframe.onload = () => {
+            const contentWindow = iframe.contentWindow;
+            if (contentWindow) {
+                // منع فتح النوافذ الجديدة أو النوافذ المنبثقة
+                contentWindow.open = function() {
+                    console.warn("تم حظر نافذة منبثقة.");
+                    return null;
+                };
+            }
         };
 
-        // منع الإعلانات
-        iframe.onload = function() {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            const ads = iframeDoc.querySelectorAll('[id^="ad-"], [class^="ad-"], [id*="ad-"], [class*="ad-"]');
-            ads.forEach(ad => ad.style.display = 'none');
-        };
-
-        // منع النقر على نوافذ فوق الموقع والتوجيه التلقائي
-        iframe.onload = function() {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            iframeDoc.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A' && event.target.href) {
-                    event.preventDefault();
-                    const url = event.target.href;
-                    if (url.includes('http')) {
-                        // يمكنك إضافة شروط إضافية هنا للسماح ببعض الروابط إذا كنت بحاجة إلى ذلك
-                        alert('النقر على هذا الرابط ممنوع.');
-                    }
-                }
-            });
-        };
+        // منع النسخ داخل الـ iframe (قد لا يعمل دائماً بسبب سياسات المتصفح)
+        try {
+            iframe.contentWindow.document.body.style.userSelect = 'none';
+        } catch (error) {
+            console.warn("لا يمكن التحكم في iframe بسبب سياسات المتصفح.");
+        }
     </script>
 </body>
 </html>
