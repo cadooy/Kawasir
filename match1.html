@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاهدة القنوات</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000; /* لون خلفية للمظهر الداكن */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+
+        /* منع النسخ داخل صفحة التطبيق */
+        body, iframe {
+            user-select: none;  /* منع تحديد النصوص */
+            -webkit-user-select: none;  /* لعمل دعم للأجهزة القديمة */
+            -ms-user-select: none;  /* لمنع النسخ في Internet Explorer */
+        }
+    </style>
+</head>
+<body>
+    <!-- تضمين الموقع داخل Iframe -->
+    <iframe
+        id="webview"
+        src="https://www.koora-live.vip/"
+        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
+        allowfullscreen
+        referrerpolicy="no-referrer"
+    ></iframe>
+
+    <script>
+        // منع الإعلانات المنبثقة والنوافذ الجديدة
+        const iframe = document.getElementById('webview');
+
+        iframe.onload = () => {
+            const contentWindow = iframe.contentWindow;
+            if (contentWindow) {
+                // منع فتح النوافذ الجديدة أو النوافذ المنبثقة
+                contentWindow.open = function() {
+                    console.warn("تم حظر نافذة منبثقة.");
+                    return null;
+                };
+
+                // منع التوجيهات التلقائية
+                contentWindow.location.assign = function() {
+                    console.warn("تم حظر توجيه تلقائي.");
+                };
+
+                contentWindow.location.replace = function() {
+                    console.warn("تم حظر توجيه تلقائي.");
+                };
+            }
+        };
+
+        // منع النسخ داخل الـ iframe (قد لا يعمل دائماً بسبب سياسات المتصفح)
+        try {
+            iframe.contentWindow.document.body.style.userSelect = 'none';
+        } catch (error) {
+            console.warn("لا يمكن التحكم في iframe بسبب سياسات المتصفح.");
+        }
+    </script>
+</body>
+</html>
