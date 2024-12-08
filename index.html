@@ -3,37 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secret Code App</title>
+    <title>Kawasir</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background-color: #080000;
-            font-family: 'Tajawal', sans-serif;
-            color: gold;
-            text-align: center;
             margin: 0;
-            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            background: #080000; /* اللون الجديد */
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
             height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center; /* توسيط النص */
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            font-size: 14px;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            position: relative;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel .slider-indicator {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            height: 3px;
+            width: 50px;
+            background: #FFD700;
+            transition: transform 0.3s ease;
+        }
+
+        .card {
+            flex: 0 0 auto;
+            width: 150px;
+            margin-right: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* تأثير العوم */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px); /* البطاقة تبدو طائرة */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        .card img {
+            width: 100%;
+            border-bottom: 2px solid #FFD700;
+        }
+
+        .card-title {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #FFD700;
+        }
+
+        .next-button, .prev-button {
+            position: absolute;
+            top: 60%; /* تعديل الموقع العمودي */
+            transform: translateY(-50%);
+            background: #080000;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            color: #FFD700;
+            font-size: 18px;
+            display: none;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .next-button:hover, .prev-button:hover {
+            transform: translateY(-15px); /* تأثير العوم */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+        }
+
+        .next-button {
+            right: 10px; /* تحسين المسافة من الحافة */
+        }
+
+        .prev-button {
+            left: 10px; /* تحسين المسافة من الحافة */
+        }
+
+        .header {
+            display: flex;
+            align-items: flex-start;
+            padding: 5px 20px;
+            width: 80%; /* العرض الكامل */
+    height: 70px; /* تحديد الطول */
+
+        }
+
+        .header-logo {
+            margin-right: 20px;
+        }
+
+        .header-logo img {
+            width: 90px;
+            height: 90px;
+            cursor: pointer;
+            position: relative; /* أو absolute إذا كنت ترغب في تحريكه بالنسبة لعنصر أب */
+    top: -10px; /* رفعه للأعلى */
+    right: 20px; /* تحريكه لليمين */
+}
+
+        .search-bar {
             display: flex;
             justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            margin: 20px 0;
+            width: 100%;
+            position: relative; /* لتمكين تحديد الموقع النسبي */
         }
-        .content {
-            font-size: 24px;
-            font-weight: bold;
-            line-height: 1.5;
+
+        .search-bar input {
+            width: 90%;
+            padding: 11px 20px;
+            font-size: 14px;
+            border: none;
+            position: relative; /* أو absolute إذا كنت ترغب في تحريكه بالنسبة لعنصر أب */
+    top: -2px; /* رفعه للأعلى */
+    right: 35px; /* تحريكه لليمين */;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFD700;
+            outline: none;
+            text-align: center;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+            margin-left: auto; /* إزاحة البحث نحو اليمين */
         }
-        .heart {
-            font-size: 40px;
-            color: yellow;
+
+        .telegram-button {
+            position: absolute;
+            left: 150px; /* تحديد الموقع الأفقي */
+            top: -18px; /* تحديد الموقع العمودي */
+            background-color: transparent; /* إزالة اللون الذهبي */
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            color: #FFD700;
+            font-size: 55px; /* تغيير حجم الزر */
+            box-shadow: none; /* إزالة الظل */
+        }
+
+        .telegram-button:hover {
+            transform: translateY(-5px); /* تأثير العوم */
+            box-shadow: none; /* إزالة الظل */
+        }
+
+        .header-logo img {
+            pointer-events: none; /* تعطيل النقر على اللوجو */
         }
     </style>
 </head>
 <body>
-    <div class="content">
-        Welcome, hero! You've found the secret code in our app. We thank you for being a loyal user.
-        <div class="heart">💛</div>
+<style>
+    /* تعطيل تحديد النصوص */
+    body {
+        -webkit-user-select: none; /* لنظام كروم وأندرويد */
+        -moz-user-select: none; /* لنظام فايرفوكس */
+        -ms-user-select: none; /* لنظام إنترنت إكسبلورر */
+        user-select: none; /* حديث */
+    }
+</style>
+<script>
+    // تعطيل النسخ من خلال اختصارات لوحة المفاتيح
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && (event.key === 'c' || event.key === 'a')) {
+            event.preventDefault();
+        }
+    });
+
+    // تعطيل النقر بالزر الأيمن
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+    });
+</script>
+
+<!-- شريط البحث -->
+<div class="header">
+    <div class="header-logo">
+        <a href="#home"><img src="https://i.ibb.co/7ns1LG3/Untitled4-20241122234646.png" alt="Logo"></a>
     </div>
+    <div class="search-bar">
+        <a href="https://t.me/your_telegram_channel" class="telegram-button" target="_blank">
+            <img src="https://i.ibb.co/NpTzs9Z/telegram-1.png" alt="Telegram"> <!-- تغيير صورة الزر هنا -->
+        </a>
+        <input type="text" id="searchInput" placeholder="ابحث عن قنواتك المفضلة" onkeyup="handleSearch(event)">
+    </div>
+</div>
+
+<!-- رسالة عدم وجود نتائج -->
+<div id="noResults" style="text-align: center; font-size: 16px; color: #FFD700; display: none;">
+    لا توجد نتائج مطابقة.
+</div>
+
+<script>
+    function handleSearch(event) {
+        const query = event.target.value.toLowerCase();
+        const sections = document.querySelectorAll('.section'); // جميع الأقسام
+        let hasResults = false;
+
+        sections.forEach(section => {
+            const sectionTitle = section.querySelector('.section-title').textContent.toLowerCase();
+            const cards = section.querySelectorAll('.card'); // البطاقات داخل القسم الحالي
+            let sectionHasResults = false;
+
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase(); // النص داخل .card-title
+                if (title.includes(query) || sectionTitle.includes(query)) {
+                    card.style.display = 'block'; // عرض البطاقة إذا تطابقت
+                    sectionHasResults = true;
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none'; // إخفاء البطاقة إذا لم تطابق
+                }
+            });
+
+            // إظهار أو إخفاء القسم بناءً على وجود نتائج بداخله
+            section.style.display = sectionHasResults ? 'block' : 'none';
+        });
+
+        // عرض رسالة عدم وجود نتائج إذا لم تكن هناك أي نتائج
+        document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
+    }
+</script>
+
+    <div class="container">
+        <h1 style="font-size: 36px; color: #FFD700; text-align: center; margin-top: 5px; margin-bottom: 20px;">العالم بين يديك</h1>
+        <!-- قسم حصريات كواسر -->
+        <div class="section">
+            <h2 class="section-title">حصريات كواسر</h2>
+            <div class="section-description">هذه مجموعة منصات تم انشائها من طرف كواسر خصيصا لك دون الحاجة لموقع خارجي</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'sportsIndicator')">
+                <a href="Kawasir live.html" class="card">
+                    <img src="https://i.ibb.co/vPHHhwL/Untitled4-20241207134436.png" alt="Kawasir Live">
+                    <div class="card-title">Kawasir Live</div>
+                </a>
+                <a href="prayer times.html" class="card">
+                    <img src="https://i.ibb.co/z2w2rZh/Untitled4-20241207134443.png" alt="beIN SPORTS 2">
+                    <div class="card-title">مواقيت الصلاة</div>
+                </a>
+                <a href="weather.html" class="card">
+                    <img src="https://i.ibb.co/yQfGTv8/Untitled4-20241207134452.png" alt="احوال الطقس">
+                    <div class="card-title">احوال الطقس</div>
+                </a>
+        
+                <div class="slider-indicator" id="sportsIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- بث مباشر مباريات -->
+        <div class="section">
+            <h2 class="section-title">بث مباشر مباريات</h2>
+            <div class="section-description">يتم تغيير المصادر بشكل دوري لنوفر لك تجربة مشاهدة سلسة.
+ملاحظة : قم بتغيير سيرفر او المصدر اذا لم يعمل معك البث</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'moviesIndicator')">
+                <a href="match1.html" class="card">
+                    <img src="https://i.ibb.co/LRgF1L9/Untitled4-20241207225613.png" alt="المصدر 1">
+                    <div class="card-title">المصدر 1</div>
+                </a>
+                <a href="match2.html" class="card">
+                    <img src="https://i.ibb.co/5ndj9MK/Untitled4-20241207225630.png" alt="المصدر 2">
+                    <div class="card-title">المصدر 2</div>
+                </a>
+                <a href="match3.html" class="card">
+                    <img src="https://i.ibb.co/HhTcvpL/Untitled4-20241207225639.png" alt="المصدر 3">
+                    <div class="card-title">المصدر 3</div>
+                </a>
+                <a href="match4.html" class="card">
+                    <img src="https://i.ibb.co/VTYspbN/Untitled4-20241207225648.png" alt="المصدر 4">
+                    <div class="card-title">المصدر 4</div>
+                </a>
+                <a href="match5.html" class="card">
+                    <img src="https://i.ibb.co/3TTzvHC/Untitled4-20241207225656.png" alt="المصدر 5">
+                    <div class="card-title">المصدر 5</div>
+                </a>
+                <a href="match6.html" class="card">
+                    <img src="https://i.ibb.co/6W4xsgc/Untitled4-20241207225704.png" alt="المصدر 6">
+                    <div class="card-title">المصدر 6</div>
+                </a>
+
+                <div class="slider-indicator" id="moviesIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- بث مباشر قنوات -->
+        <div class="section">
+            <h2 class="section-title">بث مباشر قنوات</h2>
+            <div class="section-description">شاهد البث المباشر لقنواتك المفضلة والمشفرة منها، ايضا عبر العديد من المنصات التالية</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'newSectionIndicator')">
+                <a href="elahmad.html" class="card">
+                    <img src="https://i.ibb.co/tsQWr6Q/Untitled4-20241207142744.png" alt="الاحمد">
+                    <div class="card-title">الاحمد</div>
+                </a>
+                <a href="3rbcafee.html" class="card">
+                    <img src="https://i.ibb.co/mJtY8Qm/Untitled4-20241207185631.png" alt="عرب كافيه">
+                    <div class="card-title">عرب كافيه</div>
+                </a>
+                <a href="tlfaz.html" class="card">
+                    <img src="https://i.ibb.co/8mT6mmG/Untitled4-20241207195626.png" alt="تلفاز العرب">
+                    <div class="card-title">تلفاز العرب</div>
+                </a>
+                <a href="web24iptv.html" class="card">
+                    <img src="https://i.ibb.co/3SW4g43/Untitled4-20241207200409.png" alt="web24iptv">
+                    <div class="card-title">web24iptv</div>
+                </a>
+
+                <div class="slider-indicator" id="newSectionIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+
+
+        <!-- قسم مسلسلات -->
+        <div class="section">
+            <h2 class="section-title">مسلسلات</h2>
+            <div class="section-description">قسم مخصص لعرض المسلسلات الشهيرة والجديدة.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'seriesIndicator')">
+                <a href="series1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Series 1">
+                    <div class="card-title">Series 1</div>
+                </a>
+                <a href="series2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Series 2">
+                    <div class="card-title">Series 2</div>
+                </a>
+                <a href="series3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Series 3">
+                    <div class="card-title">Series 3</div>
+                </a>
+
+                <div class="slider-indicator" id="seriesIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم أخبار -->
+        <div class="section">
+            <h2 class="section-title">أخبار</h2>
+            <div class="section-description">قسم مخصص لعرض أحدث الأخبار والتقارير.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'newsIndicator')">
+                <a href="news1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="News 1">
+                    <div class="card-title">News 1</div>
+                </a>
+                <a href="news2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="News 2">
+                    <div class="card-title">News 2</div>
+                </a>
+                <a href="news3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="News 3">
+                    <div class="card-title">News 3</div>
+                </a>
+
+                <div class="slider-indicator" id="newsIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم وثائقي -->
+        <div class="section">
+            <h2 class="section-title">وثائقي</h2>
+            <div class="section-description">قسم مخصص لعرض الأفلام الوثائقية المميزة.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'documentaryIndicator')">
+                <a href="documentary1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Documentary 1">
+                    <div class="card-title">Documentary 1</div>
+                </a>
+                <a href="documentary2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Documentary 2">
+                    <div class="card-title">Documentary 2</div>
+                </a>
+                <a href="documentary3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Documentary 3">
+                    <div class="card-title">Documentary 3</div>
+                </a>
+
+                <div class="slider-indicator" id="documentaryIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم موسيقى -->
+        <div class="section">
+            <h2 class="section-title">موسيقى</h2>
+            <div class="section-description">قسم مخصص لعرض الفيديوهات الموسيقية والحفلات.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'musicIndicator')">
+                <a href="music1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Music 1">
+                    <div class="card-title">Music 1</div>
+                </a>
+                <a href="music2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Music 2">
+                    <div class="card-title">Music 2</div>
+                </a>
+                <a href="music3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Music 3">
+                    <div class="card-title">Music 3</div>
+                </a>
+
+                <div class="slider-indicator" id="musicIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم أطفال -->
+        <div class="section">
+            <h2 class="section-title">أطفال</h2>
+            <div class="section-description">قسم مخصص لعرض البرامج والأفلام الموجهة للأطفال.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'kidsIndicator')">
+                <a href="kids1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Kids 1">
+                    <div class="card-title">Kids 1</div>
+                </a>
+                <a href="kids2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Kids 2">
+                    <div class="card-title">Kids 2</div>
+                </a>
+                <a href="kids3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Kids 3">
+                    <div class="card-title">Kids 3</div>
+                </a>
+
+                <div class="slider-indicator" id="kidsIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم رياضة -->
+        <div class="section">
+            <h2 class="section-title">رياضة</h2>
+            <div class="section-description">قسم مخصص لعرض الأحداث الرياضية المباشرة والملخصات.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'sportsEventsIndicator')">
+                <a href="sportsEvent1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Sports Event 1">
+                    <div class="card-title">Sports Event 1</div>
+                </a>
+                <a href="sportsEvent2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Sports Event 2">
+                    <div class="card-title">Sports Event 2</div>
+                </a>
+                <a href="sportsEvent3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Sports Event 3">
+                    <div class="card-title">Sports Event 3</div>
+                </a>
+
+                <div class="slider-indicator" id="sportsEventsIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم تعليم -->
+        <div class="section">
+            <h2 class="section-title">تعليم</h2>
+            <div class="section-description">قسم مخصص لعرض البرامج والدورات التعليمية.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'educationIndicator')">
+                <a href="education1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Education 1">
+                    <div class="card-title">Education 1</div>
+                </a>
+                <a href="education2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Education 2">
+                    <div class="card-title">Education 2</div>
+                </a>
+                <a href="education3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Education 3">
+                    <div class="card-title">Education 3</div>
+                </a>
+
+                <div class="slider-indicator" id="educationIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم تكنولوجيا -->
+        <div class="section">
+            <h2 class="section-title">تكنولوجيا</h2>
+            <div class="section-description">قسم مخصص لعرض أحدث التقنيات والابتكارات.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'technologyIndicator')">
+                <a href="technology1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Technology 1">
+                    <div class="card-title">Technology 1</div>
+                </a>
+                <a href="technology2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Technology 2">
+                    <div class="card-title">Technology 2</div>
+                </a>
+                <a href="technology3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Technology 3">
+                    <div class="card-title">Technology 3</div>
+                </a>
+
+                <div class="slider-indicator" id="technologyIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- قسم صحة -->
+        <div class="section">
+            <h2 class="section-title">صحة</h2>
+            <div class="section-description">قسم مخصص لعرض النصائح والبرامج الصحية.</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'healthIndicator')">
+                <a href="health1.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Health 1">
+                    <div class="card-title">Health 1</div>
+                </a>
+                <a href="health2.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Health 2">
+                    <div class="card-title">Health 2</div>
+                </a>
+                <a href="health3.html" class="card">
+                    <img src="https://via.placeholder.com/150" alt="Health 3">
+                    <div class="card-title">Health 3</div>
+                </a>
+
+                <div class="slider-indicator" id="healthIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+    </div>
+
+<script>
+    function scrollNext(button, carouselSelector) {
+        const carousel = button.parentElement.querySelector(carouselSelector);
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 15; // عرض البطاقة + الهامش
+        carousel.scrollBy({
+            left: cardWidth,
+            behavior: 'smooth'
+        });
+        moveIndicator(carousel, button.parentElement.querySelector('.slider-indicator').id);
+    }
+
+    function scrollPrev(button, carouselSelector) {
+        const carousel = button.parentElement.querySelector(carouselSelector);
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 15; // عرض البطاقة + الهامش
+        carousel.scrollBy({
+            left: -cardWidth,
+            behavior: 'smooth'
+        });
+        moveIndicator(carousel, button.parentElement.querySelector('.slider-indicator').id);
+    }
+
+    function moveIndicator(carousel, indicatorId) {
+        const indicator = document.getElementById(indicatorId);
+        const scrollPosition = carousel.scrollLeft;
+        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 15; // عرض البطاقة + الهامش
+        const percentage = (scrollPosition / maxScroll) * 100;
+        indicator.style.width = percentage + '%';
+
+        // Show or hide the prev button based on scroll position
+        const prevButton = carousel.parentElement.querySelector('.prev-button');
+        if (scrollPosition > 0) {
+            prevButton.style.display = 'block';
+        } else {
+            prevButton.style.display = 'none';
+        }
+
+        // Show or hide the next button based on scroll position
+        const nextButton = carousel.parentElement.querySelector('.next-button');
+        if (scrollPosition < maxScroll - cardWidth) {
+            nextButton.style.display = 'block';
+        } else {
+            nextButton.style.display = 'none';
+        }
+    }
+
+    document.querySelectorAll('.next-button').forEach(button => {
+        button.style.display = 'block';
+    });
+
+    // Initialize the indicator and button visibility
+    document.querySelectorAll('.carousel').forEach(carousel => {
+        moveIndicator(carousel, carousel.querySelector('.slider-indicator').id);
+    });
+</script>
 </body>
 </html>
