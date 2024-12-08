@@ -66,6 +66,21 @@
         } catch (error) {
             console.warn("لا يمكن التحكم في iframe بسبب سياسات المتصفح.");
         }
+
+        // منع فتح النوافذ المنبثقة على المتصفح
+        window.open = function() {
+            console.warn("تم حظر نافذة منبثقة.");
+            return null;
+        };
+
+        // منع التوجيهات التلقائية على المتصفح
+        window.location.assign = function() {
+            console.warn("تم حظر توجيه تلقائي.");
+        };
+
+        window.location.replace = function() {
+            console.warn("تم حظر توجيه تلقائي.");
+        };
     </script>
 </body>
 </html>
