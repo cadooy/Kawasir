@@ -57,6 +57,16 @@
                 contentWindow.location.replace = function() {
                     console.warn("تم حظر توجيه تلقائي.");
                 };
+
+                // منع التوجيه إلى روابط خارجية
+                const originalAnchorClick = contentWindow.HTMLAnchorElement.prototype.click;
+                contentWindow.HTMLAnchorElement.prototype.click = function() {
+                    if (this.target !== '_self') {
+                        console.warn("تم حظر توجيه خارجي.");
+                        return;
+                    }
+                    originalAnchorClick.call(this);
+                };
             }
         };
 
