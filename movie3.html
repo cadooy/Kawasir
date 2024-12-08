@@ -20,45 +20,48 @@
 
         /* منع النسخ داخل صفحة التطبيق */
         body, iframe {
-            user-select: none;
+            user-select: none;  /* منع تحديد النصوص */
+            -webkit-user-select: none;  /* لعمل دعم للأجهزة القديمة */
+            -ms-user-select: none;  /* لمنع النسخ في Internet Explorer */
         }
     </style>
 </head>
 <body>
     <!-- تضمين الموقع داخل Iframe -->
-    <iframe 
-        id="webview" 
-        src="https://wecima.movie/" 
-        sandbox="allow-scripts allow-same-origin allow-forms allow-modals"
+    <iframe
+        id="webview"
+        src="https://wecima.movie/"
+        sandbox="allow-scripts allow-same-origin"
+        allowfullscreen
         referrerpolicy="no-referrer"
     ></iframe>
 
     <script>
-        // منع الإعلانات والنوافذ المنبثقة داخل iframe
-        document.addEventListener('DOMContentLoaded', () => {
-            const iframe = document.getElementById('webview');
-            
-            iframe.onload = () => {
-                try {
-                    const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-                    
-                    // منع الإعلانات والنوافذ المنبثقة
-                    const observer = new MutationObserver(() => {
-                        const popups = iframeDocument.querySelectorAll('[target="_blank"], a[href*="ads"]');
-                        popups.forEach((popup) => {
-                            popup.remove();
-                        });
-                    });
-                    
-                    observer.observe(iframeDocument, {
-                        childList: true,
-                        subtree: true,
-                    });
-                } catch (e) {
-                    console.error("خطأ في التحكم بمحتوى iframe:", e);
-                }
-            };
-        });
+        // منع الإعلانات والنوافذ الجديدة
+        const iframe = document.getElementById('webview');
+
+        iframe.onload = () => {
+            const contentWindow = iframe.contentWindow;
+            if (contentWindow) {
+                // منع فتح النوافذ الجديدة
+                contentWindow.open = function() {
+                    console.warn("تم حظر نافذة منبثقة.");
+                    return null;
+                };
+
+                // منع التوجيه إلى روابط خارجية
+                iframe.contentDocument.body.addEventListener('click', (event) => {
+                    const target = event.target.closest('a');
+                    if (target && target.href && !target.href.startsWith(window.location.origin)) {
+                        event.preventDefault();
+                        console.warn("تم حظر رابط خارجي:", target.href);
+                    }
+                });
+            }
+        };
+
+        // منع النسخ واللصق (قد لا يعمل في كل الحالات بسبب سياسات المواقع)
+        document.addEventListener('contextmenu', (e) => e.preventDefault()); // منع القائمة اليمنى
     </script>
 </body>
 </html>
