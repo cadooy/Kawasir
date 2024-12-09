@@ -1,67 +1,84 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشاهدة القنوات</title>
+    <title>تطبيق Kawasir</title>
     <style>
+        /* تصفية كاملة لعرض الموقع */
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #000; /* لون خلفية للمظهر الداكن */
         }
 
         iframe {
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             border: none;
         }
 
-        /* منع النسخ داخل صفحة التطبيق */
-        body, iframe {
-            user-select: none;  /* منع تحديد النصوص */
-            -webkit-user-select: none;  /* لعمل دعم للأجهزة القديمة */
-            -ms-user-select: none;  /* لمنع النسخ في Internet Explorer */
+        /* رسائل حظر الروابط */
+        #blockedMessage {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: none;
+            z-index: 9999;
         }
     </style>
 </head>
 <body>
-    <!-- تضمين الموقع داخل Iframe -->
-    <iframe
-        id="webview"
-        src="https://wecima.click/"
-        sandbox="allow-scripts allow-same-origin"
-        allowfullscreen
-        referrerpolicy="no-referrer"
-    ></iframe>
+    <div id="blockedMessage">تم حظر هذه الصفحة لأنها ليست ضمن الموقع المسموح به.</div>
+    <iframe id="webview" src="https://wecima.movie" sandbox="allow-scripts allow-same-origin"></iframe>
 
     <script>
-        // منع الإعلانات والنوافذ الجديدة
+        // التحكم بالروابط داخل الموقع
+        const allowedDomain = "wecima.movie";
         const iframe = document.getElementById('webview');
+        const blockedMessage = document.getElementById('blockedMessage');
 
-        iframe.onload = () => {
-            const contentWindow = iframe.contentWindow;
-            if (contentWindow) {
-                // منع فتح النوافذ الجديدة
-                contentWindow.open = function() {
-                    console.warn("تم حظر نافذة منبثقة.");
-                    return null;
-                };
+        iframe.addEventListener('load', function () {
+            try {
+                // التحقق من نطاق الصفحة الحالية
+                const currentDomain = new URL(iframe.contentWindow.location.href).hostname;
 
-                // منع التوجيه إلى روابط خارجية
-                iframe.contentDocument.body.addEventListener('click', (event) => {
-                    const target = event.target.closest('a');
-                    if (target && target.href && !target.href.startsWith(window.location.origin)) {
-                        event.preventDefault();
-                        console.warn("تم حظر رابط خارجي:", target.href);
-                    }
-                });
+                if (!currentDomain.includes(allowedDomain)) {
+                    iframe.src = "about:blank"; // إعادة تعيين الإطار
+                    blockedMessage.style.display = "block"; // إظهار رسالة الحظر
+                }
+            } catch (error) {
+                console.error("خطأ في التحقق من النطاق:", error);
+            }
+        });
+
+        // إزالة الإعلانات بمجرد تحميل الصفحة
+        iframe.onload = function () {
+            const script = `
+                (function() {
+                    const ads = document.querySelectorAll("iframe, .ad, .popup, [class*='ads']");
+                    ads.forEach(ad => ad.remove());
+                })();
+            `;
+            try {
+                iframe.contentWindow.eval(script);
+            } catch (error) {
+                console.error("خطأ في إزالة الإعلانات:", error);
             }
         };
 
-        // منع النسخ واللصق (قد لا يعمل في كل الحالات بسبب سياسات المواقع)
-        document.addEventListener('contextmenu', (e) => e.preventDefault()); // منع القائمة اليمنى
+        // منع الروابط المنبثقة
+        window.open = function () {
+            alert("تم منع نافذة منبثقة!");
+            return null;
+        };
     </script>
 </body>
 </html>
