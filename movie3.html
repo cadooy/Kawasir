@@ -24,10 +24,19 @@
             font-size: 18px;
             z-index: 1000;
         }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
     <div id="blockedMessage">تم منع النوافذ المنبثقة أو التوجيهات الخارجية.</div>
+
+    <!-- رابط الموقع يتم وضعه هنا -->
+    <iframe id="webview" src="https://wecima.movie"></iframe>
 
     <script>
         // منع فتح النوافذ المنبثقة
