@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kawasir</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* ستايل الصفحة */
+        body {
+            margin: 0;
+            font-family: 'Tajawal', sans-serif;
+            background: #080000;
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logo img {
+            max-width: 90px;
+            height: auto;
+        }
+        .button-container {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .toggle-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid #FFD700;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #FFD700;
+            color: #0f0f0f;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+        .toggle-button:hover {
+            transform: scale(1.05);
+        }
+        .toggle-button.active {
+            background: #0f0f0f;
+            color: #FFD700;
+            transform: scale(1.1);
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            border: 2px solid #FFD700;
+        }
+        video, iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #080000;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .message {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #FFD700;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .details {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 12px;
+        }
+        .description {
+            font-size: 18px;
+            color: #CCCCCC;
+            margin-bottom: 20px;
+        }
+        .share-button {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #FFD700;
+            color: #0f0f0f;
+            transition: background 0.3s ease, transform 0.2s ease;
+            text-decoration: none;
+        }
+        .share-button:hover {
+            background: #e6c200;
+            transform: scale(1.05);
+        }
+        .share-button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+    <div class="container">
+        <div class="logo">
+            <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="شعار التطبيق">
+        </div>
+        <div class="button-container">
+            <button class="toggle-button active" onclick="switchServer('m3u8Player', this)">سيرفر الأول</button>
+            <button class="toggle-button" onclick="switchServer('iframePlayer', this)">سيرفر الثاني</button>
+        </div>
+        <div class="video-container">
+            <div class="overlay" id="loadingOverlay">
+                <div class="message">جاري تشغيل القناة، يرجى الانتظار</div>
+                <div class="spinner"></div>
+            </div>
+            <video id="m3u8Player" controls autoplay muted style="display: block;">
+                <source src="https://live4.beinconnect.us/YallaGoalApp/beINSports1.m3u8" type="application/x-mpegURL">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <iframe 
+                id="iframePlayer"
+                src=""
+                allowfullscreen 
+                sandbox="allow-scripts allow-same-origin allow-forms"
+                style="display: none;">
+            </iframe>
+        </div>
+        <div class="details">
+            <div class="title">beIN SPORTS 1</div>
+            <div class="description">
+                مرحبًا بك في عالم كواسر، تابع البث المباشر واستمتع بمحتوى غني ومتنوع مقدم لك بجودة عالية وتجربة مشاهدة مميزة.
+            </div>
+            <a class="share-button" href="https://t.me/kawasir1931" target="_blank">قناتنا على تيليجرام</a>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('m3u8Player');
+        const iframe = document.getElementById('iframePlayer');
+        const overlay = document.getElementById('loadingOverlay');
+        let framesCount = 0;
+
+        // إخفاء الرسالة بعد عرض 3 إطارات
+        video.addEventListener('timeupdate', () => {
+            framesCount++;
+            if (framesCount > 3) {
+                overlay.style.display = 'none';
+            }
+        });
+
+        // إيقاف مشغل التضمين عندما يتم الانتقال إلى سيرفر m3u8
+        function stopIframe() {
+            if (iframe) {
+                iframe.src = ''; // مسح رابط المصدر
+                iframe.style.display = 'none'; // إخفاء iframe
+            }
+        }
+
+        // تبديل بين السيرفرات وإيقاف المشغل السابق
+        function switchServer(playerId, button) {
+            // إعادة ضبط الأزرار
+            document.querySelectorAll('.toggle-button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active'); // تحديد الزر النشط
+
+            // إيقاف المشغل القديم
+            const currentPlayer = document.querySelector('video, iframe');
+            if (currentPlayer) {
+                currentPlayer.pause();
+                currentPlayer.src = '';
+            }
+
+            document.getElementById('m3u8Player').style.display = 'none';
+            document.getElementById('iframePlayer').style.display = 'none';
+            overlay.style.display = playerId === 'm3u8Player' ? 'flex' : 'none';
+            framesCount = 0;
+
+            if (playerId === 'm3u8Player') stopIframe();
+
+            const player = document.getElementById(playerId);
+            player.style.display = 'block';
+            player.src = playerId === 'm3u8Player' 
+                ? "https://live4.beinconnect.us/YallaGoalApp/beINSports1.m3u8"
+                : "https://livetv.aflam4you.net/playeraf.php?vid=68&aflam_s=1&aflam_w=100%&aflam_h=250&aflam_k=1hhj1113222";
+
+            if (playerId === 'm3u8Player') player.load();
+        }
+    </script>
+</body>
+</html>
