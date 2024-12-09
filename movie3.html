@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة مخصصة</title>
+    <title>حماية التطبيق من التوجيهات</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             font-family: Arial, sans-serif;
-        }
-
-        iframe {
-            width: 100vw;
-            height: 100vh;
-            border: none;
         }
 
         #blockedMessage {
@@ -24,53 +17,71 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
             background: rgba(0, 0, 0, 0.8);
             color: white;
+            padding: 20px;
             border-radius: 8px;
             font-size: 18px;
-            text-align: center;
             z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <div id="blockedMessage">تم حظر فتح هذا الرابط.</div>
-    <iframe id="webview" src="https://wecima.movie"></iframe>
+    <div id="blockedMessage">تم منع النوافذ المنبثقة أو التوجيهات الخارجية.</div>
 
     <script>
-        const iframe = document.getElementById('webview');
-        const blockedMessage = document.getElementById('blockedMessage');
+        // منع فتح النوافذ المنبثقة
+        window.open = function () {
+            const blockedMessage = document.getElementById('blockedMessage');
+            blockedMessage.style.display = "block";
+            setTimeout(() => { blockedMessage.style.display = "none"; }, 3000); // إخفاء الرسالة بعد 3 ثوانٍ
+            return null;
+        };
 
-        // منع التوجيهات إلى روابط خارج الموقع
-        iframe.addEventListener('load', function () {
-            try {
-                // التحقق من أن الرابط ينتمي إلى نطاق الموقع المسموح به
-                const currentURL = iframe.contentWindow.location.href;
-                const allowedDomain = "wecima.movie";
-
-                if (!currentURL.includes(allowedDomain)) {
-                    // إذا كان الرابط ليس من النطاق المسموح
-                    iframe.src = "about:blank"; // إعادة ضبط iframe
-                    blockedMessage.style.display = "block"; // إظهار رسالة الحظر
-                }
-            } catch (error) {
-                console.error("خطأ في التحقق من الروابط: ", error);
-            }
-        });
-
-        // منع الروابط الخارجية داخل الصفحة
+        // منع التوجيهات إلى روابط خارجية
         document.addEventListener('click', function (event) {
             const target = event.target;
 
             if (target.tagName === 'A' && target.href) {
-                // إذا كان الرابط خارجي
-                if (!target.href.includes("wecima.movie")) {
+                if (!target.href.includes(window.location.hostname)) { // إذا كان الرابط خارجي
                     event.preventDefault(); // منع الفتح
-                    blockedMessage.style.display = "block"; // إظهار رسالة الحظر
+                    const blockedMessage = document.getElementById('blockedMessage');
+                    blockedMessage.style.display = "block";
+                    setTimeout(() => { blockedMessage.style.display = "none"; }, 3000); // إخفاء الرسالة بعد 3 ثوانٍ
                 }
             }
         });
+
+        // حذف الإعلانات وعناصر النوافذ المنبثقة
+        function removeAds() {
+            const adSelectors = [
+                'iframe', // إذا كانت الإعلانات داخل iframe
+                '.popup', // النوافذ المنبثقة
+                '.ads', // العناصر التي تحتوي على الإعلانات
+                '[class*="ad"]', // أي عنصر يحتوي على كلمة "ad" في اسم الصنف
+                '[id*="ad"]', // أي عنصر يحتوي على كلمة "ad" في اسم المعرف
+                'a[target="_blank"]' // الروابط التي تفتح في نافذة جديدة
+            ];
+
+            adSelectors.forEach(selector => {
+                const ads = document.querySelectorAll(selector);
+                ads.forEach(ad => ad.remove());
+            });
+        }
+
+        // مراقبة الصفحة باستمرار وإزالة الإعلانات والتوجيهات الجديدة
+        const observer = new MutationObserver(removeAds);
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // إزالة الإعلانات عند تحميل الصفحة
+        window.onload = removeAds;
+
+        // تعطيل إعادة التوجيهات التلقائية
+        setInterval(() => {
+            if (window.top !== window.self) {
+                window.top.location = window.self.location;
+            }
+        }, 100);
     </script>
 </body>
 </html>
