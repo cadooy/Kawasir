@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق Kawasir</title>
+    <title>صفحة مخصصة</title>
     <style>
-        /* تصفية كاملة لعرض الموقع */
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
         iframe {
@@ -18,67 +18,59 @@
             border: none;
         }
 
-        /* رسائل حظر الروابط */
         #blockedMessage {
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
             padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
             border-radius: 8px;
-            font-family: Arial, sans-serif;
+            font-size: 18px;
             text-align: center;
-            display: none;
-            z-index: 9999;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <div id="blockedMessage">تم حظر هذه الصفحة لأنها ليست ضمن الموقع المسموح به.</div>
-    <iframe id="webview" src="https://wecima.movie" sandbox="allow-scripts allow-same-origin"></iframe>
+    <div id="blockedMessage">تم حظر فتح هذا الرابط.</div>
+    <iframe id="webview" src="https://wecima.movie"></iframe>
 
     <script>
-        // التحكم بالروابط داخل الموقع
-        const allowedDomain = "wecima.movie";
         const iframe = document.getElementById('webview');
         const blockedMessage = document.getElementById('blockedMessage');
 
+        // منع التوجيهات إلى روابط خارج الموقع
         iframe.addEventListener('load', function () {
             try {
-                // التحقق من نطاق الصفحة الحالية
-                const currentDomain = new URL(iframe.contentWindow.location.href).hostname;
+                // التحقق من أن الرابط ينتمي إلى نطاق الموقع المسموح به
+                const currentURL = iframe.contentWindow.location.href;
+                const allowedDomain = "wecima.movie";
 
-                if (!currentDomain.includes(allowedDomain)) {
-                    iframe.src = "about:blank"; // إعادة تعيين الإطار
+                if (!currentURL.includes(allowedDomain)) {
+                    // إذا كان الرابط ليس من النطاق المسموح
+                    iframe.src = "about:blank"; // إعادة ضبط iframe
                     blockedMessage.style.display = "block"; // إظهار رسالة الحظر
                 }
             } catch (error) {
-                console.error("خطأ في التحقق من النطاق:", error);
+                console.error("خطأ في التحقق من الروابط: ", error);
             }
         });
 
-        // إزالة الإعلانات بمجرد تحميل الصفحة
-        iframe.onload = function () {
-            const script = `
-                (function() {
-                    const ads = document.querySelectorAll("iframe, .ad, .popup, [class*='ads']");
-                    ads.forEach(ad => ad.remove());
-                })();
-            `;
-            try {
-                iframe.contentWindow.eval(script);
-            } catch (error) {
-                console.error("خطأ في إزالة الإعلانات:", error);
-            }
-        };
+        // منع الروابط الخارجية داخل الصفحة
+        document.addEventListener('click', function (event) {
+            const target = event.target;
 
-        // منع الروابط المنبثقة
-        window.open = function () {
-            alert("تم منع نافذة منبثقة!");
-            return null;
-        };
+            if (target.tagName === 'A' && target.href) {
+                // إذا كان الرابط خارجي
+                if (!target.href.includes("wecima.movie")) {
+                    event.preventDefault(); // منع الفتح
+                    blockedMessage.style.display = "block"; // إظهار رسالة الحظر
+                }
+            }
+        });
     </script>
 </body>
 </html>
