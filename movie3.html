@@ -28,11 +28,10 @@
 </head>
 <body>
     <!-- تضمين الموقع داخل Iframe -->
-    <iframe
-        id="webview"
-        src="https://alooytv30.shop/"
-        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
-        allowfullscreen
+    <iframe 
+        id="webview" 
+        src="https://alooytv30.shop/" 
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"
         referrerpolicy="no-referrer"
     ></iframe>
 
@@ -43,29 +42,16 @@
         iframe.onload = () => {
             const contentWindow = iframe.contentWindow;
             if (contentWindow) {
-                // منع فتح النوافذ الجديدة أو النوافذ المنبثقة
+                // السماح بفتح النوافذ الجديدة
                 contentWindow.open = function() {
-                    console.warn("تم حظر نافذة منبثقة.");
-                    return null;
-                };
-
-                // منع التوجيهات التلقائية
-                contentWindow.location.assign = function() {
-                    console.warn("تم حظر توجيه تلقائي.");
-                };
-
-                contentWindow.location.replace = function() {
-                    console.warn("تم حظر توجيه تلقائي.");
+                    console.log("تم السماح بفتح نافذة جديدة.");
+                    return window.open.apply(window, arguments);
                 };
             }
         };
 
-        // منع النسخ داخل الـ iframe (قد لا يعمل دائماً بسبب سياسات المتصفح)
-        try {
-            iframe.contentWindow.document.body.style.userSelect = 'none';
-        } catch (error) {
-            console.warn("لا يمكن التحكم في iframe بسبب سياسات المتصفح.");
-        }
+        // منع النسخ داخل الـ iframe
+        iframe.contentWindow.document.body.style.userSelect = 'none';
     </script>
 </body>
 </html>
