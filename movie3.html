@@ -26,12 +26,12 @@
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
     <!-- تضمين الموقع داخل Iframe -->
     <iframe
         id="webview"
         src="https://web2.topcinema.cam/"
-        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
+        sandbox="allow-scripts allow-same-origin allow-forms"
         allowfullscreen
         referrerpolicy="no-referrer"
     ></iframe>
