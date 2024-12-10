@@ -28,10 +28,11 @@
 </head>
 <body>
     <!-- تضمين الموقع داخل Iframe -->
-    <iframe 
-        id="webview" 
-        src="https://alooytvod.shop/video/alooytv-trend?sort=release_date" 
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"
+    <iframe
+        id="webview"
+        src="https://movizland.lol/"
+        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
+        allowfullscreen
         referrerpolicy="no-referrer"
     ></iframe>
 
@@ -42,16 +43,29 @@
         iframe.onload = () => {
             const contentWindow = iframe.contentWindow;
             if (contentWindow) {
-                // السماح بفتح النوافذ الجديدة
+                // منع فتح النوافذ الجديدة أو النوافذ المنبثقة
                 contentWindow.open = function() {
-                    console.log("تم السماح بفتح نافذة جديدة.");
-                    return window.open.apply(window, arguments);
+                    console.warn("تم حظر نافذة منبثقة.");
+                    return null;
+                };
+
+                // منع التوجيهات التلقائية
+                contentWindow.location.assign = function() {
+                    console.warn("تم حظر توجيه تلقائي.");
+                };
+
+                contentWindow.location.replace = function() {
+                    console.warn("تم حظر توجيه تلقائي.");
                 };
             }
         };
 
-        // منع النسخ داخل الـ iframe
-        iframe.contentWindow.document.body.style.userSelect = 'none';
+        // منع النسخ داخل الـ iframe (قد لا يعمل دائماً بسبب سياسات المتصفح)
+        try {
+            iframe.contentWindow.document.body.style.userSelect = 'none';
+        } catch (error) {
+            console.warn("لا يمكن التحكم في iframe بسبب سياسات المتصفح.");
+        }
     </script>
 </body>
 </html>
