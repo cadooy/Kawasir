@@ -40,6 +40,7 @@
             height: 60px;
             border-radius: 50%;
             border: 2px solid gold; /* إضافة حدود ذهبية للشعار */
+            cursor: pointer; /* تغيير مؤشر الماوس عند التحويم فوق الشعار */
         }
 
         /* تصميم البحث */
@@ -66,14 +67,6 @@
             filter: drop-shadow(0 0 1px gold) drop-shadow(0 0 2px gold) drop-shadow(0 0 3px gold); /* إضافة تأثير التوهج الخفيف جدًا */
         }
 
-        .search-container input[type="text"]:focus {
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* زيادة الظل عند التركيز */
-            transform: scale(1.05); /* تكبير الحجم قليلاً عند التركيز */
-            background: gold; /* تغيير الخلفية إلى الذهبي عند التركيز */
-            color: #080000; /* تغيير لون النص إلى #080000 عند التركيز */
-            filter: drop-shadow(0 0 2px gold) drop-shadow(0 0 4px gold) drop-shadow(0 0 6px gold); /* زيادة تأثير التوهج الخفيف جدًا عند التركيز */
-        }
-
         iframe {
             width: 100%;
             height: 100vh;
@@ -85,11 +78,11 @@
 <body>
     <!-- شريط البحث مع الشعار -->
     <header id="searchBar">
-        <div class="logo">
+        <div class="logo" onclick="redirectToHome()">
             <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="شعار التطبيق">
         </div>
         <div class="search-container">
-            <input type="text" id="searchQuery" placeholder="إبحث عن فيلمك المفضل الآن" onkeypress="handleKeyPress(event)" onclick="changeColors()">
+            <input type="text" id="searchQuery" placeholder="إبحث عن فيلمك المفضل الآن" onkeypress="handleKeyPress(event)">
         </div>
     </header>
 
@@ -122,14 +115,6 @@
             }
         }
 
-        // تغيير الألوان فورًا عند النقر
-        function changeColors() {
-            const input = document.getElementById("searchQuery");
-            input.style.background = 'gold';
-            input.style.color = '#080000';
-            input.style.filter = 'drop-shadow(0 0 2px gold) drop-shadow(0 0 4px gold) drop-shadow(0 0 6px gold)';
-        }
-
         // إخفاء أو إظهار شريط البحث عند التمرير
         let lastScrollTop = 0;
         const searchBar = document.getElementById("searchBar");
@@ -155,6 +140,29 @@
                 console.warn('لا يمكن التحكم في محتوى iframe بسبب سياسات الأمان.');
             }
         });
+
+        // توجيه المستخدم إلى الرابط الأساسي عند الضغط على الشعار
+        function redirectToHome() {
+            const iframe = document.getElementById("webview");
+            iframe.src = 'https://tv.cimaa4u.com/category/%d8%a7%d9%81%d9%84%d8%a7%d9%85-%d8%a7%d8%ac%d9%86%d8%a8%d9%8a/';
+        }
+
+        // إعادة تعيين ألوان محرك البحث عند النقر في أي مكان خارجه
+        document.addEventListener('click', (event) => {
+            const searchContainer = document.querySelector('.search-container');
+            const searchInput = document.getElementById('searchQuery');
+            if (!searchContainer.contains(event.target) && event.target !== searchInput) {
+                resetSearchColors();
+            }
+        });
+
+        // إعادة تعيين ألوان محرك البحث إلى الألوان الأصلية
+        function resetSearchColors() {
+            const input = document.getElementById("searchQuery");
+            input.style.background = 'linear-gradient(145deg, #080000, #1c1c1c)';
+            input.style.color = 'gold';
+            input.style.filter = 'drop-shadow(0 0 1px gold) drop-shadow(0 0 2px gold) drop-shadow(0 0 3px gold)';
+        }
     </script>
 </body>
 </html>
