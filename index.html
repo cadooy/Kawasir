@@ -276,13 +276,13 @@
 </script>
 
     <div class="container">
-        <h1 style="font-size: 36px; color: #FFD700; text-align: center; margin-top: 5px; margin-bottom: 20px;">المباراة القادمة</h1>
+        <h1 style="font-size: 36px; color: #FFD700; text-align: center; margin-top: 5px; margin-bottom: 20px;">جارية الآن</h1>
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
             <div style="text-align: center;">
                 <img src="https://i.ibb.co/x54MCsJ/USM-El-Harrach-logo.png" alt="Team 1 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
                 <div style="color: #FFFFFF;">إتحاد الحراش</div>
             </div>
-            <span style="font-size: 48px; color: #FFFFFF;">ضد</span>
+            <span style="font-size: 48px; color: #FFFFFF;">3-1</span>
             <div style="text-align: center;">
                 <img src="https://i.ibb.co/w632KZ0/MSP-Batna-logo.png" alt="Team 2 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
                 <div style="color: #FFFFFF;">مولودية باتنة</div>
@@ -463,7 +463,7 @@
     // Timer
     function updateTimer() {
         const timerElement = document.getElementById('timer');
-        const startTime = new Date('2024-12-13T18:00:00').getTime(); // تحديد وقت بداية العداد الزمني
+        const startTime = new Date('2024-12-13T20:45:00').getTime(); // تحديد وقت بداية العداد الزمني
         const now = new Date().getTime();
         const elapsedTime = now - startTime;
 
@@ -477,7 +477,7 @@
     }
 
     // شرط لعرض العداد التنازلي أو العداد الزمني
-    const showCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
+    const showCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
     const showTimerOrCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
 
     if (showTimerOrCountdown) {
