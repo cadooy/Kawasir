@@ -439,7 +439,7 @@
 
     // عداد تنازلي
     function updateCountdown() {
-        const countdownDate = new Date('2024-12-13T19:16:00').getTime();
+        const countdownDate = new Date('2024-12-13T19:26:00').getTime();
         const now = new Date().getTime();
         const distance = countdownDate - now;
 
@@ -452,7 +452,7 @@
 
         if (distance < 0) {
             clearInterval(countdownInterval);
-            document.getElementById('countdown').innerHTML = 'المباراة بدأت!';
+            document.getElementById('countdown').innerHTML = 'ستبدأ المباراة بعد قليل';
         }
     }
 
