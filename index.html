@@ -10,7 +10,7 @@
         body {
             margin: 0;
             font-family: 'Tajawal', sans-serif;
-            background: #080000;
+            background: #080000; /* اللون الجديد */
             color: #FFFFFF;
             display: flex;
             flex-direction: column;
@@ -36,7 +36,7 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
+            text-align: center; /* توسيط النص */
             position: relative;
         }
 
@@ -84,12 +84,12 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* تأثير العوم */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px); /* البطاقة تبدو طائرة */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
         }
 
@@ -106,7 +106,7 @@
 
         .next-button, .prev-button {
             position: absolute;
-            top: 60%;
+            top: 60%; /* تعديل الموقع العمودي */
             transform: translateY(-50%);
             background: #080000;
             border: none;
@@ -122,24 +122,24 @@
         }
 
         .next-button:hover, .prev-button:hover {
-            transform: translateY(-15px);
+            transform: translateY(-15px); /* تأثير العوم */
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
         }
 
         .next-button {
-            right: 10px;
+            right: 10px; /* تحسين المسافة من الحافة */
         }
 
         .prev-button {
-            left: 10px;
+            left: 10px; /* تحسين المسافة من الحافة */
         }
 
         .header {
             display: flex;
             align-items: flex-start;
             padding: 5px 20px;
-            width: 80%;
-            height: 70px;
+            width: 80%; /* العرض الكامل */
+            height: 70px; /* تحديد الطول */
         }
 
         .header-logo {
@@ -150,9 +150,9 @@
             width: 90px;
             height: 90px;
             cursor: pointer;
-            position: relative;
-            top: -10px;
-            right: 20px;
+            position: relative; /* أو absolute إذا كنت ترغب في تحريكه بالنسبة لعنصر أب */
+            top: -10px; /* رفعه للأعلى */
+            right: 20px; /* تحريكه لليمين */
         }
 
         .search-bar {
@@ -160,7 +160,7 @@
             justify-content: center;
             margin: 20px 0;
             width: 100%;
-            position: relative;
+            position: relative; /* لتمكين تحديد الموقع النسبي */
         }
 
         .search-bar input {
@@ -168,74 +168,79 @@
             padding: 11px 20px;
             font-size: 14px;
             border: none;
-            position: relative;
-            top: -2px;
-            right: 35px;
+            position: relative; /* أو absolute إذا كنت ترغب في تحريكه بالنسبة لعنصر أب */
+            top: -2px; /* رفعه للأعلى */
+            right: 35px; /* تحريكه لليمين */;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.2);
             color: #FFD700;
             outline: none;
             text-align: center;
             box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-            margin-left: auto;
+            margin-left: auto; /* إزاحة البحث نحو اليمين */
         }
 
         .telegram-button {
             position: absolute;
-            left: 150px;
-            top: -18px;
-            background-color: transparent;
+            left: 150px; /* تحديد الموقع الأفقي */
+            top: -18px; /* تحديد الموقع العمودي */
+            background-color: transparent; /* إزالة اللون الذهبي */
             border: none;
             padding: 10px;
             cursor: pointer;
             color: #FFD700;
-            font-size: 55px;
-            box-shadow: none;
+            font-size: 55px; /* تغيير حجم الزر */
+            box-shadow: none; /* إزالة الظل */
         }
 
         .telegram-button:hover {
-            transform: translateY(-5px);
-            box-shadow: none;
+            transform: translateY(-5px); /* تأثير العوم */
+            box-shadow: none; /* إزالة الظل */
         }
 
         .header-logo img {
-            pointer-events: none;
+            pointer-events: none; /* تعطيل النقر على اللوجو */
         }
     </style>
 </head>
 <body>
 <style>
+    /* تعطيل تحديد النصوص */
     body {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+        -webkit-user-select: none; /* لنظام كروم وأندرويد */
+        -moz-user-select: none; /* لنظام فايرفوكس */
+        -ms-user-select: none; /* لنظام إنترنت إكسبلورر */
+        user-select: none; /* حديث */
     }
 </style>
 <script>
+    // تعطيل النسخ من خلال اختصارات لوحة المفاتيح
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && (event.key === 'c' || event.key === 'a')) {
             event.preventDefault();
         }
     });
 
+    // تعطيل النقر بالزر الأيمن
     document.addEventListener('contextmenu', function(event) {
         event.preventDefault();
     });
 </script>
 
+<!-- شريط البحث -->
 <div class="header">
     <div class="header-logo">
         <a href="#home"><img src="https://i.ibb.co/7ns1LG3/Untitled4-20241122234646.png" alt="Logo"></a>
     </div>
     <div class="search-bar">
         <a href="https://t.me/your_telegram_channel" class="telegram-button" target="_blank">
-            <img src="https://i.ibb.co/NpTzs9Z/telegram-1.png" alt="Telegram">
+            <img src="https://i.ibb.co/NpTzs9Z/telegram-1.png" alt="Telegram"> <!-- تغيير صورة الزر هنا -->
         </a>
         <input type="text" id="searchInput" placeholder="ابحث في كواسر الان" onkeyup="handleSearch(event)">
     </div>
 </div>
 
+<!-- رسالة عدم وجود نتائج -->
 <div id="noResults" style="text-align: center; font-size: 16px; color: #FFD700; display: none;">
     لا توجد نتائج مطابقة.
 </div>
@@ -243,124 +248,138 @@
 <script>
     function handleSearch(event) {
         const query = event.target.value.toLowerCase();
-        const sections = document.querySelectorAll('.section');
+        const sections = document.querySelectorAll('.section'); // جميع الأقسام
         let hasResults = false;
 
         sections.forEach(section => {
             const sectionTitle = section.querySelector('.section-title').textContent.toLowerCase();
-            const cards = section.querySelectorAll('.card');
+            const cards = section.querySelectorAll('.card'); // البطاقات داخل القسم الحالي
             let sectionHasResults = false;
 
             cards.forEach(card => {
-                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const title = card.querySelector('.card-title').textContent.toLowerCase(); // النص داخل .card-title
                 if (title.includes(query) || sectionTitle.includes(query)) {
-                    card.style.display = 'block';
+                    card.style.display = 'block'; // عرض البطاقة إذا تطابقت
                     sectionHasResults = true;
                     hasResults = true;
                 } else {
-                    card.style.display = 'none';
+                    card.style.display = 'none'; // إخفاء البطاقة إذا لم تطابق
                 }
             });
 
+            // إظهار أو إخفاء القسم بناءً على وجود نتائج بداخله
             section.style.display = sectionHasResults ? 'block' : 'none';
         });
 
+        // عرض رسالة عدم وجود نتائج إذا لم تكن هناك أي نتائج
         document.getElementById('noResults').style.display = hasResults ? 'none' : 'block';
     }
 </script>
 
-<div class="container">
-    <h1 id="matchStatus" style="font-size: 36px; color: #FFD700; text-align: center; margin-top: 5px; margin-bottom: 20px;"></h1>
-    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
-        <img id="team1Logo" alt="Team 1 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
-        <span id="versusText" style="font-size: 48px; color: #FFD700;"></span>
-        <img id="team2Logo" alt="Team 2 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
-    </div>
-    <div id="score" style="font-size: 48px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
-    <div id="countdown" style="font-size: 48px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
-
-    <div class="section">
-        <h2 class="section-title">حصريات كواسر</h2>
-        <div class="section-description">هذه مجموعة منصات تم انشائها من طرف كواسر خصيصا لك دون الحاجة لموقع خارجي</div>
-        <div class="carousel" onscroll="moveIndicator(this, 'sportsIndicator')">
-            <a href="prayer times.html" class="card">
-                <img src="https://i.ibb.co/z2w2rZh/Untitled4-20241207134443.png" alt="beIN SPORTS 2">
-                <div class="card-title">مواقيت الصلاة</div>
-            </a>
-            <a href="weather.html" class="card">
-                <img src="https://i.ibb.co/yQfGTv8/Untitled4-20241207134452.png" alt="احوال الطقس">
-                <div class="card-title">احوال الطقس</div>
-            </a>
-            <div class="slider-indicator" id="sportsIndicator"></div>
+    <div class="container">
+        <h1 style="font-size: 36px; color: #FFD700; text-align: center; margin-top: 5px; margin-bottom: 20px;">المباراة القادمة</h1>
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <div style="text-align: center;">
+                <img src="https://i.ibb.co/x54MCsJ/USM-El-Harrach-logo.png" alt="Team 1 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
+                <div style="color: #FFFFFF;">USM El Harrach</div>
+            </div>
+            <span style="font-size: 48px; color: #FFFFFF;">1-0</span>
+            <div style="text-align: center;">
+                <img src="https://i.ibb.co/w632KZ0/MSP-Batna-logo.png" alt="Team 2 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
+                <div style="color: #FFFFFF;">MSP Batna</div>
+            </div>
         </div>
-        <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
-        <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
-    </div>
+        <div id="timer-container" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
+        <!-- قسم حصريات كواسر -->
+        <div class="section">
+            <h2 class="section-title">حصريات كواسر</h2>
+            <div class="section-description">هذه مجموعة منصات تم انشائها من طرف كواسر خصيصا لك دون الحاجة لموقع خارجي</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'sportsIndicator')">
 
-    <div class="section">
-        <h2 class="section-title">بث مباشر قنوات</h2>
-        <div class="section-description">شاهد البث المباشر لقنواتك المفضلة والمشفرة منها، وايضا بث المباريات</div>
-        <div class="carousel" onscroll="moveIndicator(this, 'newSectionIndicator')">
-            <a href="match2.html" class="card">
-                <img src="https://i.ibb.co/Hg2x1j0/Untitled4-20241212164409.png" alt="بث مباريات">
-                <div class="card-title">بث مباريات</div>
-            </a>
-            <a href="elahmad.html" class="card">
-                <img src="https://i.ibb.co/tsQWr6Q/Untitled4-20241207142744.png" alt="الاحمد">
-                <div class="card-title">الاحمد</div>
-            </a>
-            <a href="3rbcafee.html" class="card">
-                <img src="https://i.ibb.co/mJtY8Qm/Untitled4-20241207185631.png" alt="عرب كافيه">
-                <div class="card-title">عرب كافيه</div>
-            </a>
-            <a href="tlfaz.html" class="card">
-                <img src="https://i.ibb.co/8mT6mmG/Untitled4-20241207195626.png" alt="تلفاز العرب">
-                <div class="card-title">تلفاز العرب</div>
-            </a>
-            <a href="web24iptv.html" class="card">
-                <img src="https://i.ibb.co/3SW4g43/Untitled4-20241207200409.png" alt="web24iptv">
-                <div class="card-title">web24iptv</div>
-            </a>
-            <div class="slider-indicator" id="newSectionIndicator"></div>
-        </div>
-        <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
-        <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
-    </div>
+                <a href="prayer times.html" class="card">
+                    <img src="https://i.ibb.co/z2w2rZh/Untitled4-20241207134443.png" alt="beIN SPORTS 2">
+                    <div class="card-title">مواقيت الصلاة</div>
+                </a>
+                <a href="weather.html" class="card">
+                    <img src="https://i.ibb.co/yQfGTv8/Untitled4-20241207134452.png" alt="احوال الطقس">
+                    <div class="card-title">احوال الطقس</div>
+                </a>
 
-    <div class="section">
-        <h2 class="section-title">افلام</h2>
-        <div class="section-description">شاهد واستمتع بجميع افلامك المفضلة الان</div>
-        <div class="carousel" onscroll="moveIndicator(this, 'seriesIndicator')">
-            <a href="افلام اجنبية.html" class="card">
-                <img src="https://i.ibb.co/dbwCqG1/Untitled4-20241210200006.png" alt="افلام اجنبية">
-                <div class="card-title">افلام اجنبية</div>
-            </a>
-            <a href="افلام عربية.html" class="card">
-                <img src="https://i.ibb.co/jrML0Q0/Untitled4-20241210200026.png" alt="افلام عربية">
-                <div class="card-title">افلام عربية</div>
-            </a>
-            <a href="افلام هندية.html" class="card">
-                <img src="https://i.ibb.co/0nnYhZx/Untitled4-20241210200125.png" alt="افلام هندية">
-                <div class="card-title">افلام هندية</div>
-            </a>
-            <a href="افلام اسيوية.html" class="card">
-                <img src="https://i.ibb.co/GcQ7HWh/Untitled4-20241210200140.png" alt="افلام اسيوية">
-                <div class="card-title">افلام اسيوية</div>
-            </a>
-            <a href="افلام كرتون.html" class="card">
-                <img src="https://i.ibb.co/LrCM9QJ/Untitled4-20241212154527.png" alt="افلام انمي وكرتون">
-                <div class="card-title">افلام انمي وكرتون</div>
-            </a>
-            <div class="slider-indicator" id="seriesIndicator"></div>
+                <div class="slider-indicator" id="sportsIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
         </div>
-        <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
-        <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
-    </div>
+
+        <!-- بث مباشر قنوات -->
+        <div class="section">
+            <h2 class="section-title">بث مباشر قنوات</h2>
+            <div class="section-description">شاهد البث المباشر لقنواتك المفضلة والمشفرة منها، وايضا بث المباريات</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'newSectionIndicator')">
+                <a href="match2.html" class="card">
+                    <img src="https://i.ibb.co/Hg2x1j0/Untitled4-20241212164409.png" alt="بث مباريات">
+                    <div class="card-title">بث مباريات</div>
+                </a>
+                <a href="elahmad.html" class="card">
+                    <img src="https://i.ibb.co/tsQWr6Q/Untitled4-20241207142744.png" alt="الاحمد">
+                    <div class="card-title">الاحمد</div>
+                </a>
+                <a href="3rbcafee.html" class="card">
+                    <img src="https://i.ibb.co/mJtY8Qm/Untitled4-20241207185631.png" alt="عرب كافيه">
+                    <div class="card-title">عرب كافيه</div>
+                </a>
+                <a href="tlfaz.html" class="card">
+                    <img src="https://i.ibb.co/8mT6mmG/Untitled4-20241207195626.png" alt="تلفاز العرب">
+                    <div class="card-title">تلفاز العرب</div>
+                </a>
+                <a href="web24iptv.html" class="card">
+                    <img src="https://i.ibb.co/3SW4g43/Untitled4-20241207200409.png" alt="web24iptv">
+                    <div class="card-title">web24iptv</div>
+                </a>
+
+                <div class="slider-indicator" id="newSectionIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
+
+        <!-- افلام ومسلسلات -->
+        <div class="section">
+            <h2 class="section-title">افلام</h2>
+            <div class="section-description">شاهد واستمتع بجميع افلامك المفضلة الان</div>
+            <div class="carousel" onscroll="moveIndicator(this, 'seriesIndicator')">
+                <a href="افلام اجنبية.html" class="card">
+                    <img src="https://i.ibb.co/dbwCqG1/Untitled4-20241210200006.png" alt="افلام اجنبية">
+                    <div class="card-title">افلام اجنبية</div>
+                </a>
+                <a href="افلام عربية.html" class="card">
+                    <img src="https://i.ibb.co/jrML0Q0/Untitled4-20241210200026.png" alt="افلام عربية">
+                    <div class="card-title">افلام عربية</div>
+                </a>
+
+                <a href="افلام هندية.html" class="card">
+                    <img src="https://i.ibb.co/0nnYhZx/Untitled4-20241210200125.png" alt="افلام هندية">
+                    <div class="card-title">افلام هندية</div>
+                </a>
+                <a href="افلام اسيوية.html" class="card">
+                    <img src="https://i.ibb.co/GcQ7HWh/Untitled4-20241210200140.png" alt="افلام اسيوية">
+                    <div class="card-title">افلام اسيوية</div>
+                </a>
+                <a href="افلام كرتون.html" class="card">
+                    <img src="https://i.ibb.co/LrCM9QJ/Untitled4-20241212154527.png" alt="افلام انمي وكرتون">
+                    <div class="card-title">افلام انمي وكرتون</div>
+                </a>
+
+                <div class="slider-indicator" id="seriesIndicator"></div>
+            </div>
+            <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
+            <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
+        </div>
 
 <script>
     function scrollNext(button, carouselSelector) {
         const carousel = button.parentElement.querySelector(carouselSelector);
-        const cardWidth = carousel.querySelector('.card').offsetWidth + 15;
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 15; // عرض البطاقة + الهامش
         carousel.scrollBy({
             left: cardWidth,
             behavior: 'smooth'
@@ -370,7 +389,7 @@
 
     function scrollPrev(button, carouselSelector) {
         const carousel = button.parentElement.querySelector(carouselSelector);
-        const cardWidth = carousel.querySelector('.card').offsetWidth + 15;
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 15; // عرض البطاقة + الهامش
         carousel.scrollBy({
             left: -cardWidth,
             behavior: 'smooth'
@@ -382,10 +401,11 @@
         const indicator = document.getElementById(indicatorId);
         const scrollPosition = carousel.scrollLeft;
         const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        const cardWidth = carousel.querySelector('.card').offsetWidth + 15;
+        const cardWidth = carousel.querySelector('.card').offsetWidth + 15; // عرض البطاقة + الهامش
         const percentage = (scrollPosition / maxScroll) * 100;
         indicator.style.width = percentage + '%';
 
+        // Show or hide the prev button based on scroll position
         const prevButton = carousel.parentElement.querySelector('.prev-button');
         if (scrollPosition > 0) {
             prevButton.style.display = 'block';
@@ -393,6 +413,7 @@
             prevButton.style.display = 'none';
         }
 
+        // Show or hide the next button based on scroll position
         const nextButton = carousel.parentElement.querySelector('.next-button');
         if (scrollPosition < maxScroll - cardWidth) {
             nextButton.style.display = 'block';
@@ -405,104 +426,60 @@
         button.style.display = 'block';
     });
 
+    // Initialize the indicator and button visibility
     document.querySelectorAll('.carousel').forEach(carousel => {
         moveIndicator(carousel, carousel.querySelector('.slider-indicator').id);
     });
 
-    async function fetchData() {
-        const response = await fetch('https://raw.githubusercontent.com/cadooy/Kawasir/refs/heads/main/data.json');
-        const data = await response.json();
-        document.getElementById('matchStatus').innerText = data.matchStatus;
-        document.getElementById('team1Logo').src = data.team1Logo;
-        document.getElementById('team2Logo').src = data.team2Logo;
-        document.getElementById('versusText').innerText = data.versusText;
-        document.getElementById('score').innerHTML = `<span style="color: ${data.team1ScoreColor};">${data.team1Score}</span> - <span style="color: ${data.team2ScoreColor};">${data.team2Score}</span>`;
+    // عداد تنازلي
+    function updateCountdown() {
+        const countdownDate = new Date('2024-12-13T20:00:00').getTime();
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
 
-        if (data.countdownType === 'countdown') {
-            startCountdown(data.countdownDate);
-        } else if (data.countdownType === 'firstHalf') {
-            startFirstHalfCountdown(data.firstHalfTime);
-        } else if (data.countdownType === 'secondHalf') {
-            startSecondHalfCountdown(data.secondHalfTime);
-        } else if (data.countdownType === 'extraFirstHalf') {
-            startExtraFirstHalfCountdown(data.extraFirstHalfTime);
-        } else if (data.countdownType === 'extraSecondHalf') {
-            startExtraSecondHalfCountdown(data.extraSecondHalfTime);
-        } else if (data.countdownType === 'penaltyShootout') {
-            document.getElementById('countdown').innerText = 'ركلات الترجيح';
-        } else {
-            document.getElementById('countdown').style.display = 'none';
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown').innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+
+        if (distance < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById('countdown').innerHTML = 'المباراة بدأت!';
         }
     }
 
-    function startCountdown(countdownDate) {
-        const countdownInterval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = new Date(countdownDate).getTime() - now;
+    // Timer
+    function updateTimer() {
+        const timerElement = document.getElementById('timer');
+        let time = parseInt(timerElement.dataset.time, 10); // استخدام القيمة المخزنة في data-time
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-            document.getElementById('countdown').innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.getElementById('countdown').innerHTML = 'المباراة بدأت!';
-            }
-        }, 1000);
+        if (time >= 0) {
+            time++;
+            timerElement.dataset.time = time;
+        }
     }
 
-    function startFirstHalfCountdown(firstHalfTime) {
-        let [minutes, seconds] = firstHalfTime.split(':').map(Number);
-        const countdownInterval = setInterval(() => {
-            seconds++;
-            if (seconds === 60) {
-                seconds = 0;
-                minutes++;
-            }
-            document.getElementById('countdown').innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }, 1000);
-    }
+    // شرط لعرض العداد التنازلي أو العداد الزمني
+    const showCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
+    const showTimerOrCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
 
-    function startSecondHalfCountdown(secondHalfTime) {
-        let [minutes, seconds] = secondHalfTime.split(':').map(Number);
-        const countdownInterval = setInterval(() => {
-            seconds++;
-            if (seconds === 60) {
-                seconds = 0;
-                minutes++;
-            }
-            document.getElementById('countdown').innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }, 1000);
+    if (showTimerOrCountdown) {
+        if (showCountdown) {
+            document.getElementById('timer-container').innerHTML = '<div id="countdown" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
+            const countdownInterval = setInterval(updateCountdown, 1000);
+        } else {
+            document.getElementById('timer-container').innerHTML = '<div id="timer" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+    } else {
+        document.getElementById('timer-container').style.display = 'none';
     }
-
-    function startExtraFirstHalfCountdown(extraFirstHalfTime) {
-        let [minutes, seconds] = extraFirstHalfTime.split(':').map(Number);
-        const countdownInterval = setInterval(() => {
-            seconds++;
-            if (seconds === 60) {
-                seconds = 0;
-                minutes++;
-            }
-            document.getElementById('countdown').innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }, 1000);
-    }
-
-    function startExtraSecondHalfCountdown(extraSecondHalfTime) {
-        let [minutes, seconds] = extraSecondHalfTime.split(':').map(Number);
-        const countdownInterval = setInterval(() => {
-            seconds++;
-            if (seconds === 60) {
-                seconds = 0;
-                minutes++;
-            }
-            document.getElementById('countdown').innerHTML = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        }, 1000);
-    }
-
-    fetchData();
 </script>
 </body>
 </html>
