@@ -201,19 +201,6 @@
         .header-logo img {
             pointer-events: none;
         }
-
-        .score {
-            font-size: 48px;
-            color: #FFD700;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .score span {
-            border: 2px solid #FFFFFF;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
@@ -289,9 +276,7 @@
         <span id="versusText" style="font-size: 48px; color: #FFD700;"></span>
         <img id="team2Logo" alt="Team 2 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
     </div>
-    <div id="score" class="score">
-        <span id="team1Score" style="color: green;"></span> - <span id="team2Score" style="color: red;"></span>
-    </div>
+    <div id="score" style="font-size: 48px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
     <div id="countdown" style="font-size: 48px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
 
     <div class="section">
@@ -431,10 +416,7 @@
         document.getElementById('team1Logo').src = data.team1Logo;
         document.getElementById('team2Logo').src = data.team2Logo;
         document.getElementById('versusText').innerText = data.versusText;
-        document.getElementById('team1Score').innerText = data.team1Score;
-        document.getElementById('team1Score').style.color = data.team1ScoreColor;
-        document.getElementById('team2Score').innerText = data.team2Score;
-        document.getElementById('team2Score').style.color = data.team2ScoreColor;
+        document.getElementById('score').innerHTML = `<span style="color: ${data.team1ScoreColor};">${data.team1Score}</span> - <span style="color: ${data.team2ScoreColor};">${data.team2Score}</span>`;
 
         if (data.countdownType === 'countdown') {
             startCountdown(data.countdownDate);
