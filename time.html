@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حساب الوقت</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #080000;
+            color: #fff;
+            font-family: 'Tajawal', sans-serif;
+            text-align: center;
+            -webkit-user-select: none; /* منع التحديد في متصفح سفاري */
+            -moz-user-select: none; /* منع التحديد في متصفح فايرفوكس */
+            -ms-user-select: none; /* منع التحديد في متصفح إيدج */
+            user-select: none; /* منع التحديد في المتصفحات الحديثة */
+        }
+        header {
+            padding: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            border-radius: 50%;
+        }
+        .title {
+            color: gold;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 300px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            direction: rtl;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group input, .input-group button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        .input-group button {
+            background-color: gold;
+            color: #080000;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="لوجو التطبيق" class="logo">
+        <h1 class="title">حساب الوقت</h1>
+    </header>
+    <div class="card">
+        <div class="input-group">
+            <label for="minutes">أدخل عدد الدقائق التي تريد طرحها:</label>
+            <input type="number" id="minutes" min="0" step="1">
+            <button onclick="calculateTime()">حساب</button>
+        </div>
+        <div class="result" id="result"></div>
+        <button onclick="copyResult()">نسخ النتيجة</button>
+    </div>
+    <div id="error-message" class="error"></div>
+    <footer>حساب الوقت © تطبيق كواسر</footer>
+    <script>
+        function calculateTime() {
+            const minutesInput = document.getElementById('minutes').value;
+            const minutes = parseInt(minutesInput, 10);
+            if (isNaN(minutes) || minutes < 0) {
+                document.getElementById('error-message').innerText = 'يرجى إدخال عدد صحيح غير سالب.';
+                return;
+            }
+
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - minutes);
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const mins = String(now.getMinutes()).padStart(2, '0');
+            const secs = String(now.getSeconds()).padStart(2, '0');
+
+            const result = `${hours}:${mins}:${secs}`;
+            document.getElementById('result').textContent = result;
+            document.getElementById('error-message').innerText = '';
+        }
+
+        function copyResult() {
+            const result = document.getElementById('result').textContent;
+            if (result) {
+                navigator.clipboard.writeText(result).then(() => {
+                    alert('تم نسخ النتيجة إلى الحافظة.');
+                }).catch(err => {
+                    console.error('فشل في نسخ النتيجة: ', err);
+                });
+            } else {
+                alert('لا توجد نتيجة لنسخها.');
+            }
+        }
+    </script>
+</body>
+</html>
