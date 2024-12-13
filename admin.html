@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>لوحة الإدارة</h2>
+        <div class="form-group">
+            <label for="matchStatus">حالة المباراة</label>
+            <select id="matchStatus">
+                <option value="المباراة القادمة">المباراة القادمة</option>
+                <option value="جارية الآن">جارية الآن</option>
+                <option value="نهاية الشوط الاول">نهاية الشوط الاول</option>
+                <option value="نهاية الشوط الثاني">نهاية الشوط الثاني</option>
+                <option value="نهاية المباراة">نهاية المباراة</option>
+                <option value="المباراة مؤجلة">المباراة مؤجلة</option>
+                <option value="الشوط الاضافي الاول">الشوط الاضافي الاول</option>
+                <option value="الشوط الاضافي الثاني">الشوط الاضافي الثاني</option>
+                <option value="ركلات الترجيح">ركلات الترجيح</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="team1Logo">رابط شعار الفريق الأول</label>
+            <input type="text" id="team1Logo" placeholder="أدخل رابط شعار الفريق الأول">
+        </div>
+        <div class="form-group">
+            <label for="team2Logo">رابط شعار الفريق الثاني</label>
+            <input type="text" id="team2Logo" placeholder="أدخل رابط شعار الفريق الثاني">
+        </div>
+        <div class="form-group">
+            <label for="versusText">نص ضد</label>
+            <select id="versusText">
+                <option value="ضد">ضد</option>
+                <option value="نتيجة المباراة">نتيجة المباراة</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="team1Score">نتيجة الفريق الأول</label>
+            <input type="text" id="team1Score" placeholder="أدخل نتيجة الفريق الأول">
+        </div>
+        <div class="form-group">
+            <label for="team1ScoreColor">لون نتيجة الفريق الأول</label>
+            <select id="team1ScoreColor">
+                <option value="green">أخضر</option>
+                <option value="red">أحمر</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="team2Score">نتيجة الفريق الثاني</label>
+            <input type="text" id="team2Score" placeholder="أدخل نتيجة الفريق الثاني">
+        </div>
+        <div class="form-group">
+            <label for="team2ScoreColor">لون نتيجة الفريق الثاني</label>
+            <select id="team2ScoreColor">
+                <option value="green">أخضر</option>
+                <option value="red">أحمر</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="countdownType">نوع العداد</label>
+            <select id="countdownType">
+                <option value="countdown">عداد بدء المباراة</option>
+                <option value="firstHalf">الشوط الاول</option>
+                <option value="secondHalf">الشوط الثاني</option>
+                <option value="extraFirstHalf">الشوط الاضافي الاول</option>
+                <option value="extraSecondHalf">الشوط الاضافي الثاني</option>
+                <option value="penaltyShootout">ركلات الترجيح</option>
+                <option value="hide">إخفاء العداد</option>
+            </select>
+        </div>
+        <div class="form-group" id="countdownDateGroup">
+            <label for="countdownDate">تاريخ ووقت بدء المباراة</label>
+            <input type="datetime-local" id="countdownDate">
+        </div>
+        <div class="form-group" id="firstHalfTimeGroup" style="display: none;">
+            <label for="firstHalfTime">وقت بدء الشوط الاول</label>
+            <input type="text" id="firstHalfTime" placeholder="أدخل وقت بدء الشوط الاول (e.g., 00:00)">
+        </div>
+        <div class="form-group" id="secondHalfTimeGroup" style="display: none;">
+            <label for="secondHalfTime">وقت بدء الشوط الثاني</label>
+            <input type="text" id="secondHalfTime" placeholder="أدخل وقت بدء الشوط الثاني (e.g., 45:00)">
+        </div>
+        <div class="form-group" id="extraFirstHalfTimeGroup" style="display: none;">
+            <label for="extraFirstHalfTime">وقت بدء الشوط الاضافي الاول</label>
+            <input type="text" id="extraFirstHalfTime" placeholder="أدخل وقت بدء الشوط الاضافي الاول (e.g., 90:00)">
+        </div>
+        <div class="form-group" id="extraSecondHalfTimeGroup" style="display: none;">
+            <label for="extraSecondHalfTime">وقت بدء الشوط الاضافي الثاني</label>
+            <input type="text" id="extraSecondHalfTime" placeholder="أدخل وقت بدء الشوط الاضافي الثاني (e.g., 105:00)">
+        </div>
+        <div class="form-group">
+            <button onclick="updateData()">تحديث البيانات</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('countdownType').addEventListener('change', function() {
+            const countdownType = this.value;
+            document.getElementById('countdownDateGroup').style.display = countdownType === 'countdown' ? 'block' : 'none';
+            document.getElementById('firstHalfTimeGroup').style.display = countdownType === 'firstHalf' ? 'block' : 'none';
+            document.getElementById('secondHalfTimeGroup').style.display = countdownType === 'secondHalf' ? 'block' : 'none';
+            document.getElementById('extraFirstHalfTimeGroup').style.display = countdownType === 'extraFirstHalf' ? 'block' : 'none';
+            document.getElementById('extraSecondHalfTimeGroup').style.display = countdownType === 'extraSecondHalf' ? 'block' : 'none';
+        });
+
+        async function updateData() {
+            const data = {
+                matchStatus: document.getElementById('matchStatus').value,
+                team1Logo: document.getElementById('team1Logo').value,
+                team2Logo: document.getElementById('team2Logo').value,
+                versusText: document.getElementById('versusText').value,
+                team1Score: document.getElementById('team1Score').value,
+                team1ScoreColor: document.getElementById('team1ScoreColor').value,
+                team2Score: document.getElementById('team2Score').value,
+                team2ScoreColor: document.getElementById('team2ScoreColor').value,
+                countdownType: document.getElementById('countdownType').value,
+                countdownDate: document.getElementById('countdownDate').value,
+                firstHalfTime: document.getElementById('firstHalfTime').value,
+                secondHalfTime: document.getElementById('secondHalfTime').value,
+                extraFirstHalfTime: document.getElementById('extraFirstHalfTime').value,
+                extraSecondHalfTime: document.getElementById('extraSecondHalfTime').value
+            };
+
+            // Fetch the current SHA of the file
+            const shaResponse = await fetch('https://api.github.com/repos/cadooy/Kawasir/contents/data.json', {
+                headers: {
+                    'Authorization': 'token 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'
+                }
+            });
+            const shaData = await shaResponse.json();
+            const sha = shaData.sha;
+
+            const response = await fetch('https://api.github.com/repos/cadooy/Kawasir/contents/data.json', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'token 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',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: 'Update data.json',
+                    content: btoa(JSON.stringify(data, null, 2)),
+                    sha: sha
+                })
+            });
+
+            if (response.ok) {
+                alert('تم تحديث البيانات بنجاح!');
+            } else {
+                alert('فشل في تحديث البيانات.');
+            }
+        }
+    </script>
+</body>
+</html>
