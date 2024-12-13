@@ -180,24 +180,6 @@
             margin-left: auto; /* إزاحة البحث نحو اليمين */
         }
 
-        .telegram-button {
-            position: absolute;
-            left: 150px; /* تحديد الموقع الأفقي */
-            top: -18px; /* تحديد الموقع العمودي */
-            background-color: transparent; /* إزالة اللون الذهبي */
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            color: #FFD700;
-            font-size: 55px; /* تغيير حجم الزر */
-            box-shadow: none; /* إزالة الظل */
-        }
-
-        .telegram-button:hover {
-            transform: translateY(-5px); /* تأثير العوم */
-            box-shadow: none; /* إزالة الظل */
-        }
-
         .header-logo img {
             pointer-events: none; /* تعطيل النقر على اللوجو */
         }
@@ -233,9 +215,7 @@
         <a href="#home"><img src="https://i.ibb.co/7ns1LG3/Untitled4-20241122234646.png" alt="Logo"></a>
     </div>
     <div class="search-bar">
-        <a href="https://t.me/your_telegram_channel" class="telegram-button" target="_blank">
-            <img src="https://i.ibb.co/NpTzs9Z/telegram-1.png" alt="Telegram"> <!-- تغيير صورة الزر هنا -->
-        </a>
+        <img src="https://i.ibb.co/x54MCsJ/USM-El-Harrach-logo.png" alt="New Image" style="width: 60px; height: 60px; position: absolute; left: 150px; top: -18px;">
         <input type="text" id="searchInput" placeholder="ابحث في كواسر الان" onkeyup="handleSearch(event)">
     </div>
 </div>
@@ -281,12 +261,12 @@
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
             <div style="text-align: center;">
                 <img src="https://i.ibb.co/x54MCsJ/USM-El-Harrach-logo.png" alt="Team 1 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
-                <div style="color: #FFFFFF;">USM El Harrach</div>
+                <div style="color: #FFFFFF;">إتحاد الحراش</div>
             </div>
-            <span style="font-size: 48px; color: #FFFFFF;">1-0</span>
+            <span style="font-size: 48px; color: #FFFFFF;">ضد</span>
             <div style="text-align: center;">
                 <img src="https://i.ibb.co/w632KZ0/MSP-Batna-logo.png" alt="Team 2 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
-                <div style="color: #FFFFFF;">MSP Batna</div>
+                <div style="color: #FFFFFF;">مولودية باتنة</div>
             </div>
         </div>
         <div id="timer-container" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
@@ -433,7 +413,7 @@
 
     // عداد تنازلي
     function updateCountdown() {
-        const countdownDate = new Date('2024-12-13T20:00:00').getTime();
+        const countdownDate = new Date('2024-12-13T14:00:00').getTime();
         const now = new Date().getTime();
         const distance = countdownDate - now;
 
@@ -453,20 +433,21 @@
     // Timer
     function updateTimer() {
         const timerElement = document.getElementById('timer');
-        let time = parseInt(timerElement.dataset.time, 10); // استخدام القيمة المخزنة في data-time
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
+        const startTime = new Date('2024-12-14T14:30:00').getTime(); // تحديد وقت بداية العداد الزمني
+        const now = new Date().getTime();
+        const elapsedTime = now - startTime;
 
-        timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-        if (time >= 0) {
-            time++;
-            timerElement.dataset.time = time;
+        if (elapsedTime > 0) {
+            const minutes = Math.floor(elapsedTime / (1000 * 60));
+            const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+            timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        } else {
+            timerElement.innerHTML = '00:00';
         }
     }
 
     // شرط لعرض العداد التنازلي أو العداد الزمني
-    const showCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
+    const showCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
     const showTimerOrCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
 
     if (showTimerOrCountdown) {
@@ -474,7 +455,7 @@
             document.getElementById('timer-container').innerHTML = '<div id="countdown" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
             const countdownInterval = setInterval(updateCountdown, 1000);
         } else {
-            document.getElementById('timer-container').innerHTML = '<div id="timer" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
+            document.getElementById('timer-container').innerHTML = '<div id="timer" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
             const timerInterval = setInterval(updateTimer, 1000);
         }
     } else {
