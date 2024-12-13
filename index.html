@@ -288,7 +288,7 @@
                 <div style="color: #FFFFFF;">مولودية باتنة</div>
             </div>
         </div>
-        <div id="timer-container" data-time="2700" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
+        <div id="timer-container" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
 
         <!-- إضافة الأيقونات تحت العدادين -->
         <div class="social-icons">
@@ -459,7 +459,7 @@
     // Timer
     function updateTimer() {
         const timerElement = document.getElementById('timer');
-        const startTime = new Date('2024-12-13T15:27:00').getTime(); // تحديد وقت بداية العداد الزمني
+        const startTime = new Date('2024-12-13T15:55:00').getTime(); // تحديد وقت بداية العداد الزمني
         const now = new Date().getTime();
         const elapsedTime = now - startTime;
 
@@ -473,7 +473,7 @@
     }
 
     // شرط لعرض العداد التنازلي أو العداد الزمني
-    const showCountdown = falae; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
+    const showCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
     const showTimerOrCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
 
     if (showTimerOrCountdown) {
