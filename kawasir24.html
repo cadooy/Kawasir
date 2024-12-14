@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاهدة القنوات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Tajawal', sans-serif; /* تطبيق الخط Tajawal */
+        }
+
+        /* تصميم رأس الصفحة */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #080000; /* خلفية رأس الصفحة */
+            color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* محاذاة النص في المنتصف */
+        }
+
+        /* تصميم الشعار */
+        .logo img {
+            width: 90px; /* حجم الشعار */
+            height: 90px;
+            border-radius: 50%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- رأس الصفحة مع الشعار -->
+    <header>
+        <div class="logo">
+            <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="شعار التطبيق">
+        </div>
+    </header>
+
+    <!-- تضمين الموقع داخل Iframe -->
+    <iframe
+        id="webview"
+        src="https://kawasir24.blogspot.com/"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-top-navigation"
+        referrerpolicy="no-referrer"
+    ></iframe>
+
+    <script>
+        // السماح بفتح النوافذ المنبثقة
+        const iframe = document.getElementById('webview');
+        iframe.onload = () => {
+            const contentWindow = iframe.contentWindow;
+            if (contentWindow) {
+                // السماح بفتح النوافذ الجديدة
+                contentWindow.open = function() {
+                    console.log("تم السماح بفتح نافذة جديدة.");
+                    return window.open.apply(window, arguments);
+                };
+            }
+        };
+    </script>
+</body>
+</html>
