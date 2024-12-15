@@ -293,6 +293,7 @@
         <!-- إضافة الأيقونات تحت العدادين -->
         <div class="social-icons">
             <a href="https://insta.openinapp.co/0dvk5" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.openinapp.co/31twq" class="social-icon"><i class="fab fa-facebook"></i></a>
             <a href="https://telegram.openinapp.co/31twq" class="social-icon"><i class="fab fa-telegram"></i></a>
         </div>
 
@@ -443,7 +444,7 @@
 
     // عداد تنازلي
     function updateCountdown() {
-        const countdownDate = new Date('2024-12-21T14:00:00').getTime();
+        const countdownDate = new Date('2024-12-15T11:06:00').getTime();
         const now = new Date().getTime();
         const distance = countdownDate - now;
 
@@ -453,7 +454,7 @@
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-            document.getElementById('timer-container').innerHTML = '<div style="font-size: 24px; color: #FFD700; text-align: center; margin-bottom: 20px;">ستبدأ المباراة بعد قليل</div>';
+            document.getElementById('timer-container').innerHTML = '<a href="https://fb.openinapp.co/pedgz" style="font-size: 24px; color: #FFD700; text-align: center; margin-bottom: 20px; background: #080000; border: none; padding: 10px 20px; cursor: pointer; text-decoration: none;">شاهد المباراة</a>';
             clearInterval(countdownInterval);
         } else {
             document.getElementById('countdown').innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
