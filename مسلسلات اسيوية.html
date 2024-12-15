@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاهدة القنوات</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* تصميم شريط البحث */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #080000;
+            color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: start; /* محاذاة العناصر لبداية الشريط */
+            gap: 15px; /* مسافة بين الشعار وخانة البحث */
+            transition: transform 0.3s ease;
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
+        }
+
+        /* تصميم الشعار */
+        .logo img {
+            width: 60px; /* حجم الشعار */
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid gold; /* إضافة حدود ذهبية للشعار */
+            cursor: pointer; /* تغيير مؤشر الماوس عند التحويم فوق الشعار */
+        }
+
+        /* تصميم البحث */
+        .search-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* محاذاة البحث في المنتصف */
+            margin-right: 30px; /* إزاحة البحث قليلاً نحو اليمين */
+        }
+
+        .search-container input[type="text"] {
+            width: calc(110% - 80px); /* إزاحة محرك البحث قليلاً نحو اليسار */
+            max-width: 400px; /* تحديد عرض أقصى */
+            padding: 12px 15px;
+            border: 2px solid gold; /* إضافة حدود ذهبية لخانة البحث */
+            border-radius: 30px;
+            background: linear-gradient(145deg, #080000, #1c1c1c); /* تدرج خلفية */
+            color: gold;
+            font-size: 16px;
+            text-align: center; /* جعل النص في المنتصف */
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* إضافة ظل */
+            filter: drop-shadow(0 0 1px gold) drop-shadow(0 0 2px gold) drop-shadow(0 0 3px gold); /* إضافة تأثير التوهج الخفيف جدًا */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط البحث مع الشعار -->
+    <header id="searchBar">
+        <div class="logo" onclick="redirectToHome()">
+            <img src="https://i.ibb.co/MCGQJ1D/Untitled10-20241128062229.png" alt="شعار التطبيق">
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchQuery" placeholder="إبحث عن مسلسلك المفضل الآن" onkeypress="handleKeyPress(event)">
+        </div>
+    </header>
+
+    <!-- تضمين الموقع داخل Iframe -->
+    <iframe
+        id="webview"
+        src="https://tv.cimaa4u.com/category/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa-%d8%a3%d8%b3%d9%8a%d9%88%d9%8a/"
+        sandbox="allow-scripts allow-same-origin allow-presentation allowfullscreen"
+        allowfullscreen
+        referrerpolicy="no-referrer"
+    ></iframe>
+
+    <script>
+        // تنفيذ البحث
+        function searchMovie() {
+            const query = document.getElementById("searchQuery").value.trim();
+            const iframe = document.getElementById("webview");
+
+            if (query) {
+                iframe.src = `https://tv.cimaa4u.com/?s=${encodeURIComponent(query)}`;
+            } else {
+                alert("يرجى إدخال كلمة للبحث!");
+            }
+        }
+
+        // تنفيذ البحث عند الضغط على Enter
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                searchMovie();
+            }
+        }
+
+        // إخفاء أو إظهار شريط البحث عند التمرير
+        let lastScrollTop = 0;
+        const searchBar = document.getElementById("searchBar");
+        window.addEventListener("scroll", () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                searchBar.classList.add("hidden");
+            } else {
+                searchBar.classList.remove("hidden");
+            }
+            lastScrollTop = scrollTop;
+        });
+
+        // إخفاء رأس الموقع داخل iframe
+        document.getElementById('webview').addEventListener('load', () => {
+            try {
+                const iframeDocument = document.getElementById('webview').contentWindow.document;
+                const header = iframeDocument.querySelector('header'); // حاول استهداف رأس الموقع
+                if (header) {
+                    header.style.display = 'none'; // إخفاء الرأس
+                }
+            } catch (e) {
+                console.warn('لا يمكن التحكم في محتوى iframe بسبب سياسات الأمان.');
+            }
+        });
+
+        // توجيه المستخدم إلى الرابط الأساسي عند الضغط على الشعار
+        function redirectToHome() {
+            const iframe = document.getElementById("webview");
+            iframe.src = 'https://tv.cimaa4u.com/category/%d8%a7%d9%81%d9%84%d8%a7%d9%85-%d8%a7%d8%ac%d9%86%d8%a8%d9%8a/';
+        }
+
+        // إعادة تعيين ألوان محرك البحث عند النقر في أي مكان خارجه
+        document.addEventListener('click', (event) => {
+            const searchContainer = document.querySelector('.search-container');
+            const searchInput = document.getElementById('searchQuery');
+            if (!searchContainer.contains(event.target) && event.target !== searchInput) {
+                resetSearchColors();
+            }
+        });
+
+        // إعادة تعيين ألوان محرك البحث إلى الألوان الأصلية
+        function resetSearchColors() {
+            const input = document.getElementById("searchQuery");
+            input.style.background = 'linear-gradient(145deg, #080000, #1c1c1c)';
+            input.style.color = 'gold';
+            input.style.filter = 'drop-shadow(0 0 1px gold) drop-shadow(0 0 2px gold) drop-shadow(0 0 3px gold)';
+        }
+    </script>
+</body>
+</html>
