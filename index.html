@@ -202,6 +202,57 @@
             transform: scale(1.2);
             color: #FFD700;
         }
+
+        /* تنسيق الزر والقائمة */
+        .team-button {
+            background: #FFD700;
+            color: #080000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s ease, transform 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            display: block;
+            margin: 0 auto; /* توسيط الزر */
+        }
+
+        .team-button:hover {
+            background: #FFA500;
+            transform: scale(1.1); /* تأثير التكبير */
+        }
+
+        .team-list {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .team-list h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .team-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .team-list li {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 5px 0;
+            padding: 10px;
+            color: #FFFFFF;
+            transition: background 0.3s ease;
+        }
+
+        .team-list li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -290,6 +341,27 @@
         </div>
         <div id="timer-container" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
 
+        <!-- زر تشكيلة الفريق -->
+        <button class="team-button" id="teamButton" onclick="toggleTeamList()">تشكيلة الفريق</button>
+
+        <!-- قائمة تشكيلة الفريق -->
+        <div class="team-list" id="teamList">
+            <h3>تشكيلة الفريق</h3>
+            <ul>
+                <li>لاعب 1</li>
+                <li>لاعب 2</li>
+                <li>لاعب 3</li>
+                <li>لاعب 4</li>
+                <li>لاعب 5</li>
+                <li>لاعب 6</li>
+                <li>لاعب 7</li>
+                <li>لاعب 8</li>
+                <li>لاعب 9</li>
+                <li>لاعب 10</li>
+                <li>لاعب 11</li>
+            </ul>
+        </div>
+
         <!-- إضافة الأيقونات تحت العدادين -->
         <div class="social-icons">
             <a href="https://insta.openinapp.co/0dvk5" class="social-icon"><i class="fab fa-instagram"></i></a>
@@ -375,7 +447,6 @@
             <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
         </div>
 
-
         <!-- مسلسلات -->
         <div class="section">
             <h2 class="section-title">مسلسلات</h2>
@@ -412,7 +483,6 @@
             <button class="next-button" onclick="scrollNext(this, '.carousel')"><i class="fas fa-chevron-right"></i></button>
             <button class="prev-button" onclick="scrollPrev(this, '.carousel')"><i class="fas fa-chevron-left"></i></button>
         </div>
-
 
 <script>
     function scrollNext(button, carouselSelector) {
@@ -522,6 +592,34 @@
         }
     } else {
         document.getElementById('timer-container').style.display = 'none';
+    }
+
+    // دالة لإظهار وإخفاء قائمة تشكيلة الفريق
+    function toggleTeamList() {
+        const teamList = document.getElementById('teamList');
+        if (teamList.style.display === 'none' || teamList.style.display === '') {
+            teamList.style.display = 'block';
+        } else {
+            teamList.style.display = 'none';
+        }
+    }
+
+    // دالة لإظهار وإخفاء الزر
+    function toggleButton() {
+        const button = document.getElementById('teamButton');
+        if (button.style.display === 'none' || button.style.display === '') {
+            button.style.display = 'block';
+        } else {
+            button.style.display = 'none';
+        }
+    }
+
+    // إظهار أو إخفاء الزر حسب الحاجة
+    const showButton = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء الزر
+    if (showButton) {
+        document.getElementById('teamButton').style.display = 'block';
+    } else {
+        document.getElementById('teamButton').style.display = 'none';
     }
 </script>
 </body>
