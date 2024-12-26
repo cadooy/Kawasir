@@ -565,7 +565,7 @@
     // Timer
     function updateTimer() {
         const timerElement = document.getElementById('timer');
-        const startTime = new Date('2024-12-26T14:02:40').getTime(); // تحديد وقت بداية العداد الزمني
+        const startTime = new Date('2024-12-26T14:22:18').getTime(); // تحديد وقت بداية العداد الزمني
         const now = new Date().getTime();
         const elapsedTime = now - startTime;
 
@@ -580,7 +580,7 @@
 
     // شرط لعرض العداد التنازلي أو العداد الزمني
     const showCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
-    const showTimerOrCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
+    const showTimerOrCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
 
     if (showTimerOrCountdown) {
         if (showCountdown) {
