@@ -326,11 +326,41 @@
     }
 </script>
 
+    <div class="container">
+        <h1 style="font-size: 36px; color: #FFD700; text-align: center; margin-top: 5px; margin-bottom: 20px;">نهاية المباراة</h1>
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+            <div style="text-align: center;">
+                <img src="https://i.ibb.co/x54MCsJ/USM-El-Harrach-logo.png" alt="Team 1 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
+                <div style="color: #FFFFFF;">إتحاد الحراش</div>
+            </div>
+            <span style="font-size: 48px; color: #FFFFFF;">1-0</span>
+            <div style="text-align: center;">
+                <img src="https://i.ibb.co/9YgqQV1/NA-Hussein-Dey-logo.png" alt="Team 2 Logo" style="width: 100px; height: 100px; margin: 0 10px;">
+                <div style="color: #FFFFFF;">نصر حسين داي</div>
+            </div>
+        </div>
+        <div id="timer-container" data-time="0" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>
 
+        <!-- زر تشكيلة الفريق -->
+        <button class="team-button" id="teamButton" onclick="toggleTeamList()">تشكيلة الفريق</button>
 
-<iframe width="380" height="600" src="https://www.youtube.com/embed/f4Yn0Wz_vfg?si=-3te_Wf9dWcBnoiy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-
+        <!-- قائمة تشكيلة الفريق -->
+        <div class="team-list" id="teamList">
+            <h3>START11NG</h3>
+            <ul>
+                <li>فوزي شاوشي</li>
+                <li>ريان فرحات</li>
+                <li>إبراهيم فرحات</li>
+                <li>بوعلاق</li>
+                <li>مشتي أمين</li>
+                <li>بودحيو</li>
+                <li>بلحاج إسلام</li>
+                <li>عقبي هشام</li>
+                <li>برابح نجيب</li>
+                <li>بودربالة</li>
+                <li>عبيد أمين</li>
+            </ul>
+        </div>
 
         <!-- إضافة الأيقونات تحت العدادين -->
         <div class="social-icons">
@@ -484,4 +514,113 @@
         indicator.style.width = percentage + '%';
 
         // Show or hide the prev button based on scroll position
-        const pre
+        const prevButton = carousel.parentElement.querySelector('.prev-button');
+        if (scrollPosition > 0) {
+            prevButton.style.display = 'block';
+        } else {
+            prevButton.style.display = 'none';
+        }
+
+        // Show or hide the next button based on scroll position
+        const nextButton = carousel.parentElement.querySelector('.next-button');
+        if (scrollPosition < maxScroll - cardWidth) {
+            nextButton.style.display = 'block';
+        } else {
+            nextButton.style.display = 'none';
+        }
+    }
+
+    document.querySelectorAll('.next-button').forEach(button => {
+        button.style.display = 'block';
+    });
+
+    // Initialize the indicator and button visibility
+    document.querySelectorAll('.carousel').forEach(carousel => {
+        moveIndicator(carousel, carousel.querySelector('.slider-indicator').id);
+    });
+
+    // عداد تنازلي
+    function updateCountdown() {
+        const countdownDate = new Date('2025-01-04T14:00:00').getTime();
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+            document.getElementById('timer-container').innerHTML = '<div style="font-size: 24px; color: #FFD700; text-align: center; margin-bottom: 20px;">ستبدأ المباراة بعد قليل</div>';
+            clearInterval(countdownInterval);
+        } else {
+            document.getElementById('countdown').innerHTML = `${days}D ${hours}H ${minutes}M ${seconds}S`;
+        }
+
+        if (distance < 0) {
+            clearInterval(countdownInterval);
+        }
+    }
+
+    // Timer
+    function updateTimer() {
+        const timerElement = document.getElementById('timer');
+        const startTime = new Date('2024-12-26T14:22:18').getTime(); // تحديد وقت بداية العداد الزمني
+        const now = new Date().getTime();
+        const elapsedTime = now - startTime;
+
+        if (elapsedTime > 0) {
+            const minutes = Math.floor(elapsedTime / (1000 * 60));
+            const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+            timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        } else {
+            timerElement.innerHTML = '00:00';
+        }
+    }
+
+    // شرط لعرض العداد التنازلي أو العداد الزمني
+    const showCountdown = true; // قم بتغيير هذا القيمة إلى false إذا كنت تريد عرض العداد الزمني
+    const showTimerOrCountdown = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء كل من العداد التنازلي والعداد الزمني
+
+    if (showTimerOrCountdown) {
+        if (showCountdown) {
+            document.getElementById('timer-container').innerHTML = '<div id="countdown" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
+            const countdownInterval = setInterval(updateCountdown, 1000);
+        } else {
+            document.getElementById('timer-container').innerHTML = '<div id="timer" style="font-size: 36px; color: #FFD700; text-align: center; margin-bottom: 20px;"></div>';
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+    } else {
+        document.getElementById('timer-container').style.display = 'none';
+    }
+
+    // دالة لإظهار وإخفاء قائمة تشكيلة الفريق
+    function toggleTeamList() {
+        const teamList = document.getElementById('teamList');
+        if (teamList.style.display === 'none' || teamList.style.display === '') {
+            teamList.style.display = 'block';
+        } else {
+            teamList.style.display = 'none';
+        }
+    }
+
+    // دالة لإظهار وإخفاء الزر
+    function toggleButton() {
+        const button = document.getElementById('teamButton');
+        if (button.style.display === 'none' || button.style.display === '') {
+            button.style.display = 'block';
+        } else {
+            button.style.display = 'none';
+        }
+    }
+
+    // إظهار أو إخفاء الزر حسب الحاجة
+    const showButton = false; // قم بتغيير هذا القيمة إلى false إذا كنت تريد إخفاء الزر
+    if (showButton) {
+        document.getElementById('teamButton').style.display = 'block';
+    } else {
+        document.getElementById('teamButton').style.display = 'none';
+    }
+</script>
+</body>
+</html>
